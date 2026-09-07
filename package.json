@@ -1,0 +1,31 @@
+{
+  "name": "moai-agent-website",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "bun run scripts/generate-og.tsx && next build",
+    "start": "next start",
+    "lint": "tsc --noEmit",
+    "og": "bun run scripts/generate-og.tsx"
+  },
+  "dependencies": {
+    "@react-three/drei": "^10.7.8",
+    "@react-three/fiber": "^9.7.0",
+    "@react-three/postprocessing": "^3.1.1",
+    "@tailwindcss/postcss": "^4.2.2",
+    "next": "^16.3.4",
+    "postprocessing": "^6.39.4",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "tailwindcss": "^4.2.2",
+    "three": "^0.185.1"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.4",
+    "@types/three": "^0.185.0",
+    "typescript": "^5.9.3"
+  }
+}

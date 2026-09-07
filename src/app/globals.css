@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  height: 100%;
+  background: #000000;
+  color: #ffffff;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+/*
+ * CRT tear keyframes, ported from or13.io's aesthetic module. Each cycle
+ * bursts through the first 20% and holds closed for the rest, which is what
+ * makes the effect read as intermittent signal loss rather than jitter.
+ */
+@keyframes crt-tear {
+  0%, 100% { clip-path: inset(0 0 100% 0); transform: translateX(0); }
+  5% { clip-path: inset(40% 0 30% 0); transform: translateX(-6px); }
+  10% { clip-path: inset(10% 0 60% 0); transform: translateX(4px); }
+  15% { clip-path: inset(70% 0 5% 0); transform: translateX(-3px); }
+  20% { clip-path: inset(0 0 100% 0); transform: translateX(0); }
+}
+
+@keyframes crt-tear-alt {
+  0%, 100% { clip-path: inset(0 0 100% 0); transform: translateX(0); }
+  5% { clip-path: inset(25% 0 50% 0); transform: translateX(5px); }
+  10% { clip-path: inset(55% 0 20% 0); transform: translateX(-7px); }
+  15% { clip-path: inset(5% 0 75% 0); transform: translateX(3px); }
+  20% { clip-path: inset(0 0 100% 0); transform: translateX(0); }
+}
+
+/* ── Glitch Text ── */
+
+.glitch-container {
+  position: relative;
+  display: inline-block;
+}
+
+.glitch-container::before,
+.glitch-container::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  text-indent: inherit;
+  color: #ffffff;
+  opacity: 0.6;
+}
+
+.glitch-container::before {
+  animation: crt-tear 4s infinite linear;
+  z-index: -1;
+}
+
+.glitch-container::after {
+  animation: crt-tear-alt 4s infinite linear;
+  z-index: -1;
+}
+
+.glitch-rgb::before {
+  color: oklch(0.55 0.2 25);
+  opacity: 0.7;
+}
+
+.glitch-rgb::after {
+  color: oklch(0.65 0.15 250);
+  opacity: 0.7;
+}
+
+/* ── Becoming wordmark ── */
+
+.becoming {
+  font-family: var(--font-heading), system-ui, sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.35em;
+  /*
+   * Tracking adds space after the final glyph too, so the box centres half a
+   * step right of the glyphs. Indent by half the tracking to pull it back.
+   */
+  text-indent: 0.175em;
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 0 24px rgba(0, 0, 0, 0.85);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glitch-container::before,
+  .glitch-container::after {
+    animation: none !important;
+  }
+}
