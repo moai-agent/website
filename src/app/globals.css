@@ -97,3 +97,9 @@ body {
     animation: none !important;
   }
 }
+
+/* Tailwind's h-dvh emits only 100dvh; older iOS Safari needs a vh fallback. */
+.stage {
+  height: 100vh;
+  height: 100dvh;
+}

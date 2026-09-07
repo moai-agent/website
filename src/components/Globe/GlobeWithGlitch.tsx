@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
@@ -29,7 +29,19 @@ const GLITCH_CONFIG = {
   pixelationFadeSpeed: .1,
 };
 
-function Scene() {
+/*
+ * The FBO is a size x size grid, so particle count is the square: 512 gives
+ * 262k points, each running a depth-of-field blur in the fragment shader.
+ * That is fine on a desktop GPU and far too much for a phone.
+ */
+function particleGridSize() {
+  if (typeof window === "undefined") return 512;
+  const narrow = Math.min(window.innerWidth, window.innerHeight) < 640;
+  const coarse = window.matchMedia?.("(pointer: coarse)").matches ?? false;
+  return narrow || coarse ? 256 : 512;
+}
+
+function Scene({ gridSize }: { gridSize: number }) {
   const mousePos = useRef(new THREE.Vector2(0.5, 0.5));
   const prevMousePos = useRef(new THREE.Vector2(0.5, 0.5));
   const mouseDelta = useRef(new THREE.Vector2(0, 0));
@@ -43,12 +55,14 @@ function Scene() {
       isMouseDown.current = false;
     };
 
-    window.addEventListener("mousedown", handleMouseDown);
-    window.addEventListener("mouseup", handleMouseUp);
+    window.addEventListener("pointerdown", handleMouseDown);
+    window.addEventListener("pointerup", handleMouseUp);
+    window.addEventListener("pointercancel", handleMouseUp);
 
     return () => {
-      window.removeEventListener("mousedown", handleMouseDown);
-      window.removeEventListener("mouseup", handleMouseUp);
+      window.removeEventListener("pointerdown", handleMouseDown);
+      window.removeEventListener("pointerup", handleMouseUp);
+      window.removeEventListener("pointercancel", handleMouseUp);
     };
   }, []);
 
@@ -75,7 +89,7 @@ function Scene() {
         autoRotateSpeed={0}
         zoomSpeed={1}
       />
-      <Particles {...PARTICLE_CONFIG} />
+      <Particles {...PARTICLE_CONFIG} size={gridSize} />
       {GLITCH_CONFIG.enabled && (
         <EffectComposer>
           <GlitchEffect
@@ -91,12 +105,17 @@ function Scene() {
 }
 
 export default function GlobeWithGlitch() {
+  // Read once on mount; resizing between phone and desktop dimensions mid-session
+  // is not worth rebuilding the FBO for.
+  const [gridSize] = useState(particleGridSize);
+
   return (
     <Canvas
       style={{ height: "100%" }}
       camera={{ fov: 25, position: [0, 0, 6] }}
+      dpr={[1, 1.5]}
     >
-      <Scene />
+      <Scene gridSize={gridSize} />
     </Canvas>
   );
 }
