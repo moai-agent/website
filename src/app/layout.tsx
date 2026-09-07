@@ -23,6 +23,7 @@ const DESCRIPTION = "becoming...";
 // Generated into public/ by scripts/generate-og.tsx during `bun run build`.
 const OG_IMAGE = {
   url: "/og.png",
+  type: "image/png",
   width: 1200,
   height: 630,
   alt: "moai-agent \u2014 becoming...",
