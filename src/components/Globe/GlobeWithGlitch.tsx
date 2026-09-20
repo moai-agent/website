@@ -3,7 +3,7 @@
 import { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "@react-three/drei";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Particles } from "./Particles";
 import { EffectComposer } from "@react-three/postprocessing";
 import { GlitchEffect } from "./GlitchEffect";
@@ -42,6 +42,8 @@ function particleGridSize() {
 }
 
 function Scene({ gridSize }: { gridSize: number }) {
+  const aspect = useThree((state) => state.size.width / state.size.height);
+  const headScale = Math.min(1, aspect / 0.7);
   const mousePos = useRef(new THREE.Vector2(0.5, 0.5));
   const prevMousePos = useRef(new THREE.Vector2(0.5, 0.5));
   const mouseDelta = useRef(new THREE.Vector2(0, 0));
@@ -89,7 +91,7 @@ function Scene({ gridSize }: { gridSize: number }) {
         autoRotateSpeed={0}
         zoomSpeed={1}
       />
-      <Particles {...PARTICLE_CONFIG} size={gridSize} />
+      <Particles {...PARTICLE_CONFIG} size={gridSize} scale={headScale} />
       {GLITCH_CONFIG.enabled && (
         <EffectComposer>
           <GlitchEffect

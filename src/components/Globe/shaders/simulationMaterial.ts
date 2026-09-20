@@ -3,24 +3,11 @@
 
 import * as THREE from 'three'
 import { extend } from '@react-three/fiber'
-
-
-function getPoint(v:any, size:any, data:any, offset:any) {
-  v.set(Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1)
-  if (v.length() > 1) return getPoint(v, size, data, offset)
-  return v.normalize().multiplyScalar(size).toArray(data, offset)
-}
-
-function getSphere(count: any, size:any, p = new THREE.Vector4()) {
-  const data = new Float32Array(count * 4)
-  for (let i = 0; i < count * 4; i += 4) getPoint(p, size, data, i)
-  return data
-}
+import { createMoaiPositions } from '../moaiGeometry'
 
 class SimulationMaterial extends THREE.ShaderMaterial {
-  constructor() {
-    const positionsTexture = new THREE.DataTexture(getSphere(512 * 512, 128), 512, 512, THREE.RGBAFormat, THREE.FloatType)
-    positionsTexture.needsUpdate = true
+  constructor(size = 512) {
+    const positionsTexture = createMoaiPositions(size)
 
     super({
       vertexShader: `varying vec2 vUv;
@@ -162,15 +149,18 @@ class SimulationMaterial extends THREE.ShaderMaterial {
       }
       void main() {
         float t = uTime * 0.015;
-        vec3 pos = texture2D(positions, vUv).rgb; // basic simulation: displays the particles in place.
-        vec3 curlPos = texture2D(positions, vUv).rgb;
+        vec3 basePos = texture2D(positions, vUv).rgb;
+        vec3 pos = basePos;
+        vec3 curlPos = basePos;
         pos = curlNoise(pos * uCurlFreq + t);
         curlPos = curlNoise(curlPos * uCurlFreq + t);
         curlPos += curlNoise(curlPos * uCurlFreq * 2.0) * 0.5;
         curlPos += curlNoise(curlPos * uCurlFreq * 4.0) * 0.25;
         curlPos += curlNoise(curlPos * uCurlFreq * 8.0) * 0.125;
         curlPos += curlNoise(pos * uCurlFreq * 16.0) * 0.0625;
-        gl_FragColor = vec4(mix(pos, curlPos, cnoise(pos + t)), 1.0);
+        // Keep the facial features intact while the particles drift locally.
+        vec3 displacement = mix(pos, curlPos, cnoise(pos + t)) * 0.045;
+        gl_FragColor = vec4(basePos + displacement, 1.0);
       }`,
       uniforms: {
         positions: { value: positionsTexture },
@@ -178,6 +168,11 @@ class SimulationMaterial extends THREE.ShaderMaterial {
         uCurlFreq: { value: 0.25 }
       }
     })
+  }
+
+  dispose() {
+    this.uniforms.positions.value.dispose()
+    super.dispose()
   }
 }
 

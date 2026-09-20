@@ -41,8 +41,8 @@ export function Particles({ speed, fov, aperture, focus, curl, size = 512, ...pr
     const particles = new Float32Array(length * 3)
     for (let i = 0; i < length; i++) {
       const i3 = i * 3
-      particles[i3 + 0] = (i % size) / size
-      particles[i3 + 1] = i / size / size
+      particles[i3 + 0] = ((i % size) + 0.5) / size
+      particles[i3 + 1] = (Math.floor(i / size) + 0.5) / size
     }
     return particles
   }, [size])
@@ -65,7 +65,7 @@ export function Particles({ speed, fov, aperture, focus, curl, size = 512, ...pr
       {createPortal(
         <mesh>
           {/* @ts-expect-error - Custom material extended via extend() */}
-          <simulationMaterial ref={simRef} />
+          <simulationMaterial ref={simRef} args={[size]} />
           <bufferGeometry>
             <bufferAttribute attach="attributes-position" args={[positions, 3]} count={positions.length / 3} />
             <bufferAttribute attach="attributes-uv" args={[uvs, 2]} count={uvs.length / 2} />
