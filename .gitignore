@@ -11,3 +11,11 @@ public/og.png
 
 # cmux browser captures
 cmux-assets/
+
+# Impeccable working files (screenshots, decision rounds)
+.impeccable/review/
+.impeccable/questions/
+.impeccable/surface-round.json
+
+# Full-resolution sources for public/media (kept local, not shipped)
+assets/originals/

@@ -30,7 +30,7 @@ const TEAR_RED = "#cc272e"; // oklch(0.55 0.2 25)
 const TEAR_BLUE = "#3a93e6"; // oklch(0.65 0.15 250)
 
 const PAD_LEFT = 84;
-const WORD_TOP = 300;
+const WORD_TOP = 225;
 
 const moai = await readFile("assets/moai.jpg");
 const moaiSrc = `data:image/jpeg;base64,${moai.toString("base64")}`;
@@ -47,14 +47,14 @@ const word = (color: string, dx: number, dy: number) => (
       display: "flex",
       left: PAD_LEFT + dx,
       top: WORD_TOP + dy,
-      fontSize: 84,
+      fontSize: 160,
       letterSpacing: "0.28em",
       color,
       // Matches the 0.7 the tear layers carry in globals.css.
       opacity: color === "#ffffff" ? 1 : 0.7,
     }}
   >
-    becoming...
+    ahu
   </div>
 );
 

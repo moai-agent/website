@@ -41,13 +41,26 @@ function particleGridSize() {
   return narrow || coarse ? 256 : 512;
 }
 
-function Scene({ gridSize }: { gridSize: number }) {
+function Scene({
+  gridSize,
+  backdrop,
+  controlsSelector,
+}: {
+  gridSize: number;
+  backdrop: boolean;
+  controlsSelector?: string;
+}) {
   const aspect = useThree((state) => state.size.width / state.size.height);
   const headScale = Math.min(1, aspect / 0.7);
   const mousePos = useRef(new THREE.Vector2(0.5, 0.5));
   const prevMousePos = useRef(new THREE.Vector2(0.5, 0.5));
   const mouseDelta = useRef(new THREE.Vector2(0, 0));
   const isMouseDown = useRef(false);
+  const [controlsEl, setControlsEl] = useState<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (controlsSelector) setControlsEl(document.querySelector<HTMLElement>(controlsSelector));
+  }, [controlsSelector]);
 
   useEffect(() => {
     const handleMouseDown = () => {
@@ -85,12 +98,27 @@ function Scene({ gridSize }: { gridSize: number }) {
       <color attach="background" args={[DARK_BG]} />
       <fog attach="fog" args={[DARK_BG, 50, 50]} />
 
-      <OrbitControls
-        makeDefault
-        autoRotate
-        autoRotateSpeed={0}
-        zoomSpeed={1}
-      />
+      {!backdrop && (
+        <OrbitControls
+          makeDefault
+          autoRotate
+          autoRotateSpeed={0}
+          zoomSpeed={1}
+        />
+      )}
+      {/*
+       * Behind scrolling content the head rotates from a stand-in element
+       * instead of the canvas. Zoom stays off so the wheel keeps scrolling.
+       */}
+      {backdrop && controlsEl && (
+        <OrbitControls
+          makeDefault
+          domElement={controlsEl}
+          enableZoom={false}
+          enablePan={false}
+          rotateSpeed={0.6}
+        />
+      )}
       <Particles {...PARTICLE_CONFIG} size={gridSize} scale={headScale} />
       {GLITCH_CONFIG.enabled && (
         <EffectComposer>
@@ -106,18 +134,31 @@ function Scene({ gridSize }: { gridSize: number }) {
   );
 }
 
-export default function GlobeWithGlitch() {
+/*
+ * `backdrop` renders the head behind page content: the canvas takes no pointer
+ * events itself, so the pointer is read from the whole document instead.
+ */
+export default function GlobeWithGlitch({
+  backdrop = false,
+  controlsSelector,
+}: {
+  backdrop?: boolean;
+  /** In backdrop mode, the element whose drags rotate the head. */
+  controlsSelector?: string;
+}) {
   // Read once on mount; resizing between phone and desktop dimensions mid-session
   // is not worth rebuilding the FBO for.
   const [gridSize] = useState(particleGridSize);
 
   return (
     <Canvas
-      style={{ height: "100%" }}
+      style={{ height: "100%", ...(backdrop && { pointerEvents: "none" }) }}
+      eventSource={backdrop ? document.documentElement : undefined}
+      eventPrefix={backdrop ? "client" : undefined}
       camera={{ fov: 25, position: [0, 0, 6] }}
       dpr={[1, 1.5]}
     >
-      <Scene gridSize={gridSize} />
+      <Scene gridSize={gridSize} backdrop={backdrop} controlsSelector={controlsSelector} />
     </Canvas>
   );
 }

@@ -1,7 +1,9 @@
 # moai-agent.com
 
-Single-page placeholder: a GPU particle globe with a glitch post-process, and
-the word `becoming...` floating at center.
+The home of [ahu](https://github.com/moai-agent/ahu), and the site's only page.
+A GPU particle moai (drag it to rotate and glitch) sits behind one real ahu
+session that plays as you scroll, then a map of the ahu
+repository's own agents, harnesses, and models.
 
 ## Stack
 
@@ -9,7 +11,20 @@ the word `becoming...` floating at center.
 - React Three Fiber + `postprocessing` for the globe
 - Tailwind CSS v4
 - Bun for install, scripts, and CI
-- Atkinson Hyperlegible (headings) + Lexend (everything else)
+- Atkinson Hyperlegible (headings), Atkinson Hyperlegible Mono (terminal), Lexend (everything else)
+
+## Content
+
+Everything the page shows as ahu output is real, captured with ahu v0.4.0 from
+the ahu repository and trimmed with visible `…` markers:
+
+- `src/components/Landing/transcript.ts`: the scrolling session.
+- `src/components/Landing/registry.ts`: the agent, harness, model, and task
+  snapshot behind the network graph.
+
+Refresh both by re-running the commands named in each file's header, not by
+editing output by hand. `PRODUCT.md` and `DESIGN.md` record the audience,
+voice, and visual rules.
 
 ## Develop
 
@@ -31,3 +46,11 @@ bun run build   # generates public/og.png, then exports to ./out
 Pushing to `main` runs `.github/workflows/deploy.yml`, which builds the static
 export and publishes `./out` to GitHub Pages. `public/CNAME` pins the custom
 domain to `moai-agent.com`.
+
+## Media
+
+`public/media/` holds web encodes of licensed stock assets supplied by the
+maintainer: the underground cave video (27s forward-then-reverse loop, WebM
+and MP4, plus a poster frame) and the cracked-glass overlay. Full-resolution
+sources live in `assets/originals/`, which is not committed. Keep the vendor
+and license record with those sources.

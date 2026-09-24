@@ -1,12 +1,19 @@
 import type { Metadata, Viewport } from "next";
-import { Atkinson_Hyperlegible, Lexend } from "next/font/google";
+import { Atkinson_Hyperlegible, Atkinson_Hyperlegible_Mono, Lexend } from "next/font/google";
 import "./globals.css";
 
-// Atkinson Hyperlegible carries headings; Lexend carries everything else.
+// Atkinson Hyperlegible carries headings, its mono cut carries terminal
+// output, and Lexend carries everything else.
 const heading = Atkinson_Hyperlegible({
   subsets: ["latin"],
   weight: ["400", "700"],
   variable: "--font-heading",
+  display: "swap",
+});
+
+const mono = Atkinson_Hyperlegible_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
   display: "swap",
 });
 
@@ -17,8 +24,9 @@ const sans = Lexend({
 });
 
 const SITE_URL = "https://moai-agent.com";
-const TITLE = "moai-agent";
-const DESCRIPTION = "becoming...";
+const TITLE = "moai-agent / ahu";
+const DESCRIPTION =
+  "ahu launches named coding agents, each pinned to its harness and model, in a fresh Git worktree per task.";
 
 // Generated into public/ by scripts/generate-og.tsx during `bun run build`.
 const OG_IMAGE = {
@@ -26,7 +34,7 @@ const OG_IMAGE = {
   type: "image/png",
   width: 1200,
   height: 630,
-  alt: "moai-agent \u2014 becoming...",
+  alt: "moai-agent \u2014 ahu",
 };
 
 export const metadata: Metadata = {
@@ -70,7 +78,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${heading.variable} ${sans.variable}`}>
+    <html lang="en" className={`${heading.variable} ${mono.variable} ${sans.variable}`}>
       <body>{children}</body>
     </html>
   );

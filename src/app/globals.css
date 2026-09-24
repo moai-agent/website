@@ -76,21 +76,6 @@ body {
   opacity: 0.7;
 }
 
-/* ── Becoming wordmark ── */
-
-.becoming {
-  font-family: var(--font-heading), system-ui, sans-serif;
-  font-weight: 400;
-  letter-spacing: 0.35em;
-  /*
-   * Tracking adds space after the final glyph too, so the box centres half a
-   * step right of the glyphs. Indent by half the tracking to pull it back.
-   */
-  text-indent: 0.175em;
-  color: rgba(255, 255, 255, 0.92);
-  text-shadow: 0 0 24px rgba(0, 0, 0, 0.85);
-}
-
 @media (prefers-reduced-motion: reduce) {
   .glitch-container::before,
   .glitch-container::after {
