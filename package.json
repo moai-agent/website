@@ -14,6 +14,8 @@
     "@react-three/fiber": "^9.7.0",
     "@react-three/postprocessing": "^3.1.1",
     "@tailwindcss/postcss": "^4.2.2",
+    "@xterm/addon-fit": "^0.11.0",
+    "@xterm/xterm": "^6",
     "next": "^16.3.4",
     "postprocessing": "^6.39.4",
     "react": "^19.2.8",

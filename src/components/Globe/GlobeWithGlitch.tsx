@@ -141,10 +141,13 @@ function Scene({
 export default function GlobeWithGlitch({
   backdrop = false,
   controlsSelector,
+  paused = false,
 }: {
   backdrop?: boolean;
   /** In backdrop mode, the element whose drags rotate the head. */
   controlsSelector?: string;
+  /** Stop rendering, e.g. while the canvas is scrolled out of view. */
+  paused?: boolean;
 }) {
   // Read once on mount; resizing between phone and desktop dimensions mid-session
   // is not worth rebuilding the FBO for.
@@ -155,6 +158,7 @@ export default function GlobeWithGlitch({
       style={{ height: "100%", ...(backdrop && { pointerEvents: "none" }) }}
       eventSource={backdrop ? document.documentElement : undefined}
       eventPrefix={backdrop ? "client" : undefined}
+      frameloop={paused ? "never" : "always"}
       camera={{ fov: 25, position: [0, 0, 6] }}
       dpr={[1, 1.5]}
     >

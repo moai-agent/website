@@ -1,9 +1,10 @@
 # moai-agent.com
 
 The home of [ahu](https://github.com/moai-agent/ahu), and the site's only page.
-A GPU particle moai (drag it to rotate and glitch) sits behind one real ahu
-session that plays as you scroll, then a map of the ahu
-repository's own agents, harnesses, and models.
+A GPU particle moai (drag it to rotate and glitch) opens the page. Each step
+below is its own linkable section with a replayable xterm.js terminal of real
+ahu output. The page ends with a map of the ahu repository's own agents,
+harnesses, and models.
 
 ## Stack
 
@@ -11,14 +12,14 @@ repository's own agents, harnesses, and models.
 - React Three Fiber + `postprocessing` for the globe
 - Tailwind CSS v4
 - Bun for install, scripts, and CI
-- Atkinson Hyperlegible (headings), Atkinson Hyperlegible Mono (terminal), Lexend (everything else)
+- Atkinson Hyperlegible Mono (headings, controls, terminal) + Lexend (body)
 
 ## Content
 
 Everything the page shows as ahu output is real, captured with ahu v0.4.0 from
 the ahu repository and trimmed with visible `…` markers:
 
-- `src/components/Landing/transcript.ts`: the scrolling session.
+- `src/components/Landing/transcript.ts`: every step's heading, note, backdrop and terminal transcript.
 - `src/components/Landing/registry.ts`: the agent, harness, model, and task
   snapshot behind the network graph.
 
@@ -49,8 +50,11 @@ domain to `moai-agent.com`.
 
 ## Media
 
-`public/media/` holds web encodes of licensed stock assets supplied by the
-maintainer: the underground cave video (27s forward-then-reverse loop, WebM
-and MP4, plus a poster frame) and the cracked-glass overlay. Full-resolution
-sources live in `assets/originals/`, which is not committed. Keep the vendor
-and license record with those sources.
+`public/media/` holds web encodes of licensed stock assets from the or13.io
+library. There are five video loops, each 20–27s forward-then-reverse, as WebM
+and MP4 with a poster frame: `after-hours`, `dark-water`, `underground`,
+`container-port` and `landfill`. There are also two photographs, `gutted-tv`
+and `decay-corridor`, and the cracked-glass overlay. Each is used once on the
+page; DESIGN.md's One Asset Per Section table maps them to sections.
+Full-resolution sources live in `assets/originals/`, which is not committed.
+Keep the vendor and license record with those sources.

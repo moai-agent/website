@@ -1,8 +1,8 @@
-import Backdrop from "@/components/Landing/Backdrop";
-import CaveVideo from "@/components/Landing/CaveVideo";
 import CopyInstall from "@/components/Landing/CopyInstall";
+import HeroMoai from "@/components/Landing/HeroMoai";
+import SectionDots from "@/components/Landing/SectionDots";
 import Network from "@/components/Landing/Network";
-import Session from "@/components/Landing/Session";
+import Steps from "@/components/Landing/Steps";
 import { REPO_URL } from "@/components/Landing/transcript";
 import "@/components/Landing/landing.css";
 
@@ -36,7 +36,7 @@ function Arrow({ down = false }: { down?: boolean }) {
 export default function Home() {
   return (
     <div className="landing">
-      <Backdrop />
+      <SectionDots />
 
       <header className="topbar">
         <span className="topbar-name">moai-agent</span>
@@ -47,7 +47,8 @@ export default function Home() {
       </header>
 
       <main>
-        <section className="hero">
+        <section className="hero" id="top">
+          <HeroMoai />
           <div className="hero-text">
             <h1 className="hero-mark glitch-container glitch-rgb" data-text="ahu">
               ahu
@@ -61,13 +62,12 @@ export default function Home() {
         </section>
 
         <div id="session">
-          <Session />
+          <Steps />
         </div>
 
         <Network />
 
-        <section className="close" aria-labelledby="close-heading">
-          <CaveVideo />
+        <section className="close" id="install" aria-labelledby="close-heading">
           <h2 id="close-heading">It’s early. Try it.</h2>
           <CopyInstall />
           <p className="close-needs">

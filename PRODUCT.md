@@ -35,6 +35,39 @@ An ahu agent is a named, reviewable identity (name, harness, exact model, instru
 - The site's job is to send developers to the GitHub repo to try ahu and give feedback.
 - One page for as long as possible. Static export (Next.js `output: "export"`) on GitHub Pages; no backend.
 
+## Brand
+
+Modelled on or13.io's `/brand` page: why it exists, what it does, how it does it. ahu comes from the same maker as or13.io and inherits that site's aesthetic (see DESIGN.md, Aesthetic Lineage).
+
+### Why does ahu exist?
+
+Coding agents are multiplying, and an agent's name stops meaning anything the moment its harness, model, or instructions change quietly.
+
+### What does ahu do?
+
+TLDR: ahu launches named coding agents, each pinned to its harness and model, in a fresh Git worktree per task.
+
+- **Identity in the repo.** An agent is a reviewed file, not a setting on someone's laptop.
+- **A worktree per task.** Parallel agents never share a working copy.
+- **An honest inventory.** ahu shows what can reach an agent's context, and what it cannot see.
+
+### How does ahu do it?
+
+- **I. Same name, same agent.** Harness, model, and instructions are pinned; drift is shown before launch.
+- **II. Fail loudly.** A missing harness or model stops the launch. ahu never substitutes.
+- **III. Say what you can't see.** Coverage gaps are reported, never papered over.
+
+### Personality
+
+**Precise · Honest · Crafted.** Inherited from or13.io's "Bold · Experimental · Crafted", turned toward a tool: the craft still shows, but every claim is a line ahu actually prints.
+
+### Anti-references
+
+- Generic AI-slop or template SaaS landing pages (or13.io's first anti-reference).
+- Crypto/web3 hype: neon gradients, glossy 3D-for-3D's-sake. Effects must read as engineering.
+- Over-designed portfolio: effects that bury the message. Every effect earns its place against legibility.
+- Dev-tool clichés: feature grids, fake terminal output, benchmark bragging.
+
 ## Brand Commitments
 
 - Name `moai-agent`; CLI `ahu` (lowercase). Moai emoji 🗿 is the favicon; the org portrait is the share image.
@@ -57,3 +90,4 @@ An ahu agent is a named, reviewable identity (name, harness, exact model, instru
 3. The repository owns agent configuration; changes are reviewable Git diffs.
 4. Defer to each harness's native conventions.
 5. Say what you cannot see.
+6. Signal over spectacle (from or13.io): a high-signal scan must resolve in seconds; legibility outranks flourish.

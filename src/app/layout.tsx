@@ -1,16 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { Atkinson_Hyperlegible, Atkinson_Hyperlegible_Mono, Lexend } from "next/font/google";
+import { Atkinson_Hyperlegible_Mono, Lexend } from "next/font/google";
 import "./globals.css";
 
-// Atkinson Hyperlegible carries headings, its mono cut carries terminal
-// output, and Lexend carries everything else.
-const heading = Atkinson_Hyperlegible({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-heading",
-  display: "swap",
-});
-
+// Atkinson Hyperlegible Mono carries headings, controls, and terminal output;
+// Lexend carries body text.
 const mono = Atkinson_Hyperlegible_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
@@ -78,7 +71,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${heading.variable} ${mono.variable} ${sans.variable}`}>
+    <html lang="en" className={`${mono.variable} ${sans.variable}`}>
       <body>{children}</body>
     </html>
   );

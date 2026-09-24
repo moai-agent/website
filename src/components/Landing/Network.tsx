@@ -3,7 +3,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AGENTS, HARNESSES, TASKS, buildGraph, type GraphNode } from "./registry";
 
-const BONE = "236, 232, 225";
+// Canvas copies of the landing.css tokens (bone, ash, dim).
+const BONE = "240, 242, 243";
+const ASH = "#9aa7ab";
+const DIM = "#6f7d80";
 const BLUE = "oklch(0.76 0.11 250)";
 
 const NODE_RADIUS: Record<GraphNode["kind"], number> = {
@@ -51,7 +54,11 @@ export default function Network() {
     let visible = false;
     let start = performance.now();
 
-    const px = (n: GraphNode) => [size / 2 + n.x * size * 0.44, size / 2 + n.y * size * 0.44] as const;
+    // Narrow canvases shrink the rings so outward labels stay inside the frame.
+    const px = (n: GraphNode) => {
+      const k = size < 500 ? 0.36 : 0.44;
+      return [size / 2 + n.x * size * k, size / 2 + n.y * size * k] as const;
+    };
 
     const draw = (now: number) => {
       const lit = hoverRef.current ? reach(hoverRef.current, graph.edges) : null;
@@ -125,7 +132,7 @@ export default function Network() {
                 ? BLUE
                 : "oklch(0.76 0.11 250 / 0.4)"
               : n.kind === "task"
-                ? "#7b7980"
+                ? DIM
                 : `rgb(${BONE})`;
           ctx.fill();
         }
@@ -135,7 +142,7 @@ export default function Network() {
         if (labelled && on) {
           const outward = n.kind === "repo" ? 0 : Math.cos(n.angle);
           ctx.font = `${n.kind === "harness" || n.kind === "repo" ? 12 : 11}px ${font}`;
-          ctx.fillStyle = n.kind === "agent" ? BLUE : n.kind === "harness" || n.kind === "repo" ? `rgb(${BONE})` : "#a3a1a8";
+          ctx.fillStyle = n.kind === "agent" ? BLUE : n.kind === "harness" || n.kind === "repo" ? `rgb(${BONE})` : ASH;
           ctx.textBaseline = "middle";
           // Centre labels, repo and models, stack vertically so long model ids fit narrow screens.
           const stacked = n.kind === "repo" || n.kind === "model";
@@ -143,6 +150,11 @@ export default function Network() {
           const gap = r + 7;
           const lx = stacked ? x : x + (outward >= 0 ? gap : -gap);
           const ly = n.kind === "repo" ? y + 16 : n.kind === "model" ? y + (Math.sin(n.angle) >= 0 ? 14 : -14) : y;
+          // A ground-coloured halo keeps labels crisp against edges and comets.
+          ctx.lineWidth = 4;
+          ctx.lineJoin = "round";
+          ctx.strokeStyle = "rgba(0, 0, 0, 0.85)";
+          ctx.strokeText(n.label, lx, ly);
           ctx.fillText(n.label, lx, ly);
         }
         ctx.globalAlpha = 1;
@@ -222,7 +234,7 @@ export default function Network() {
   }, [graph]);
 
   return (
-    <section className="network" aria-labelledby="network-heading">
+    <section className="network" id="network" aria-labelledby="network-heading">
       <div className="network-copy">
         <h2 id="network-heading">
           {AGENTS.length} agents. {HARNESSES.length} harnesses. One repo.

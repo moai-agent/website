@@ -1,15 +1,20 @@
 /*
- * moai-agent.com landing. Black ground and the particle moai carry over from
- * the placeholder; everything below the hero is one ahu session.
+ * moai-agent.com. The particle moai owns the hero; everything below is one
+ * ahu session in or13.io's type and palette: cool phosphor neutrals, square
+ * corners, mono headings with a faint glow. Every section carries at most
+ * one artwork and no asset repeats; DESIGN.md's One Asset Per Section table
+ * is the map.
  */
 
 .landing {
   --ground: #000000;
-  --panel: #0a0a0b;
-  --rule: #242427;
-  --bone: #ece8e1;
-  --ash: #a3a1a8;
-  --dim: #7b7980;
+  --panel: oklch(0.12 0.004 228.8);
+  --rule: oklch(0.275 0.011 216.9);
+  --bone: oklch(0.96 0.003 205);
+  --ash: oklch(0.72 0.016 213.5);
+  --dim: oklch(0.58 0.017 213.2);
+  --glow: 0 0 5px oklch(0.987 0.002 197.1 / 0.3);
+  --vignette: radial-gradient(ellipse at center, transparent 45%, oklch(0 0 0 / 0.65) 100%);
   --red: oklch(0.68 0.19 28);
   --blue: oklch(0.76 0.11 250);
   --gutter: clamp(16px, 4vw, 48px);
@@ -30,7 +35,7 @@ body:has(.landing) {
 html:has(.landing) {
   height: auto;
   scroll-behavior: smooth;
-  scrollbar-color: #3a3a3f var(--ground, #000);
+  scrollbar-color: oklch(0.275 0.011 216.9) #000;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -65,15 +70,12 @@ html:has(.landing) {
   white-space: nowrap;
 }
 
-/* ── Backdrop ── */
+/* ── Hero moai ── */
 
-.backdrop {
-  position: fixed;
+.hero-moai {
+  position: absolute;
   inset: 0;
-  z-index: 0;
-  height: 100vh;
-  height: 100lvh;
-  opacity: var(--backdrop-dim, 1);
+  z-index: -1;
 }
 
 /* ── Top bar ── */
@@ -98,7 +100,7 @@ html:has(.landing) {
 }
 
 .topbar-name {
-  font-family: var(--font-heading), system-ui, sans-serif;
+  font-family: var(--font-mono), ui-monospace, monospace;
   letter-spacing: 0.2em;
   color: var(--ash);
 }
@@ -109,13 +111,16 @@ html:has(.landing) {
   gap: 8px;
   padding: 8px 14px;
   border: 1px solid var(--rule);
-  border-radius: 999px;
   background: rgb(0 0 0 / 0.55);
-  transition: border-color 200ms var(--ease-out), color 200ms var(--ease-out);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  letter-spacing: 0.04em;
+  text-shadow: var(--glow);
+  transition: border-color 200ms var(--ease-out), text-shadow 200ms var(--ease-out);
 }
 
 .topbar-link:hover {
   border-color: var(--bone);
+  text-shadow: 0 0 8px oklch(0.987 0.002 197.1 / 0.5);
 }
 
 /* ── Hero ── */
@@ -123,7 +128,7 @@ html:has(.landing) {
 .landing main {
   position: relative;
   z-index: 10;
-  /* The close's full-bleed video is 100vw, which includes the scrollbar. */
+  /* Full-bleed media and the network crack overhang the column; clip sideways. */
   overflow-x: clip;
 }
 
@@ -143,7 +148,9 @@ html:has(.landing) {
   justify-content: center;
   text-align: center;
   padding: 0 var(--gutter);
-  overflow-x: clip;
+  overflow: clip;
+  isolation: isolate;
+  background: #000;
   cursor: grab;
   user-select: none;
   touch-action: pan-y !important;
@@ -158,19 +165,22 @@ html:has(.landing) {
   padding: 40px clamp(8px, 4vw, 48px);
 }
 
-/* A soft local scrim so the line reads over the brightest particles. */
+/*
+ * Signal over spectacle: a local scrim dark enough that the brightest
+ * particles behind the text still clear 4.5:1 for the line.
+ */
 .hero-text::before {
   content: "";
   position: absolute;
-  inset: -20% -15%;
+  inset: -30% -18%;
   z-index: -1;
-  background: radial-gradient(closest-side, rgb(0 0 0 / 0.82), rgb(0 0 0 / 0.55) 55%, transparent);
-  filter: blur(6px);
+  background: radial-gradient(closest-side, rgb(0 0 0 / 0.94), rgb(0 0 0 / 0.8) 50%, rgb(0 0 0 / 0.4) 80%, transparent);
+  filter: blur(8px);
 }
 
 .hero-mark {
   margin: 0;
-  font-family: var(--font-heading), system-ui, sans-serif;
+  font-family: var(--font-mono), ui-monospace, monospace;
   font-weight: 700;
   font-size: clamp(4.5rem, 14vw, 6rem);
   line-height: 1;
@@ -217,79 +227,120 @@ html:has(.landing) {
   }
 }
 
-/* ── Session ── */
+/* ── Steps: one section, one artwork, one terminal each ── */
 
-.session {
+.step {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  min-height: 100svh;
   display: grid;
-  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  align-items: center;
   gap: clamp(32px, 5vw, 80px);
   max-width: 1320px;
   margin: 0 auto;
-  padding: 0 var(--gutter);
+  padding: clamp(72px, 12vh, 120px) var(--gutter);
+  scroll-margin-top: 0;
 }
 
-.session-term-col {
-  position: relative;
+/* Full-bleed behind the column; faded into black at both edges so sections meet cleanly. */
+.step-media {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
+  translate: -50% 0;
+  pointer-events: none;
+  mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
 }
 
-.term {
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 0.8125rem;
-  line-height: 1.6;
-  background: var(--panel);
-  border: 1px solid var(--rule);
-  border-radius: 8px;
-  font-variant-numeric: tabular-nums;
-}
-
-/*
- * The drift step cracks the terminal glass: ahu noticed something changed.
- * The crack spreads from its impact point and heals once the step is past.
- */
-.term {
-  position: relative;
-}
-
-.term-crack {
+.step-media::after {
+  content: "";
   position: absolute;
   inset: 0;
-  z-index: 1;
+  /* Vignette plus a flat shade keeps every note above 4.5:1 (see DESIGN.md, Legibility). */
+  background: var(--vignette), rgb(0 0 0 / 0.5);
+}
+
+.step-video,
+.step-photo,
+.step-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 0 0;
-  pointer-events: none;
+}
+
+/* or13.io's footage and photography grade. */
+.step-video,
+.step-photo {
+  filter: saturate(0.4) brightness(0.42) contrast(1.2);
+}
+
+/* or13.io's CrackedGlass in dark mode: screened white cracks. */
+.step-image {
+  opacity: 0.35;
   mix-blend-mode: screen;
-  opacity: 0;
-  clip-path: circle(0% at 6% 8%);
-  transition: opacity 900ms var(--ease-out), clip-path 900ms var(--ease-out);
 }
 
-.term.is-cracked .term-crack {
-  opacity: 0.14;
-  clip-path: circle(150% at 6% 8%);
+.step-copy h2 {
+  margin: 0 0 16px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  text-shadow: var(--glow);
+  font-weight: 700;
+  font-size: clamp(1.5rem, 2.4vw, 2.125rem);
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+  text-wrap: balance;
 }
 
-.term-sticky {
-  overflow: hidden;
-}
-
-.term pre {
+.step-copy p {
   margin: 0;
-  font: inherit;
-  white-space: pre-wrap;
-  overflow-wrap: break-word;
+  max-width: 36ch;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--ash);
+  text-wrap: pretty;
 }
 
-/* The panel grows with the session, then scrolls once it reaches 76vh. */
-.term-sticky {
-  position: sticky;
-  top: 12vh;
-  max-height: 76vh;
-  display: flex;
-  flex-direction: column;
-  margin: 12vh 0;
+/* Every section is a shareable fragment; the # appears on hover and focus. */
+.anchor {
+  margin-left: 0.4em;
+  color: var(--dim);
+  text-shadow: none;
+  opacity: 0;
+  transition: opacity 200ms var(--ease-out), color 200ms var(--ease-out);
+}
+
+h2:hover .anchor,
+.anchor:focus-visible {
+  opacity: 1;
+}
+
+.anchor:hover {
+  color: var(--bone);
+}
+
+@media (hover: none) {
+  .anchor {
+    opacity: 0.6;
+  }
+}
+
+/* ── Terminal ── */
+
+.term {
+  position: relative;
+  min-width: 0;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  background: var(--panel);
+  border: 1px solid var(--rule);
   box-shadow: 0 24px 60px -20px rgb(0 0 0 / 0.9);
+  font-variant-numeric: tabular-nums;
 }
 
 .term-bar {
@@ -302,34 +353,35 @@ html:has(.landing) {
   color: var(--dim);
 }
 
-.term-screen {
-  min-height: 0;
-  overflow-y: auto;
-  padding: 16px 18px 24px;
-  scrollbar-width: thin;
-  scrollbar-color: #2e2e33 transparent;
+/* The xterm host: font-family here is what the emulator measures and uses. */
+.term-xterm {
+  margin: 14px 16px 16px;
+  font-family: var(--font-mono), ui-monospace, monospace;
 }
 
-.term-block {
-  padding-bottom: 1.6em;
-  transition: opacity 500ms var(--ease-out);
+.term-xterm:not(.is-live) {
+  margin-block: 0;
 }
 
-.term-block.is-past {
-  opacity: 0.45;
+.term-xterm .xterm-viewport {
+  background: transparent !important;
 }
 
-.term-block.is-active .term-line:not(.term-cmd) {
-  animation: line-in 420ms var(--ease-out) both;
+/* Scrollback only appears after you type; keep its bar in the palette. */
+.term-xterm .xterm .scrollbar.vertical {
+  width: 4px !important;
 }
 
-.term-block.is-typing .term-line:not(.term-cmd) {
-  display: none;
+.term-xterm .xterm .scrollbar .slider {
+  background: var(--rule) !important;
 }
 
-@keyframes line-in {
-  from { opacity: 0; filter: blur(3px); }
-  to { opacity: 1; filter: blur(0); }
+.term-static {
+  margin: 0;
+  padding: 14px 16px 16px;
+  font: inherit;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
 }
 
 .term-line {
@@ -337,10 +389,6 @@ html:has(.landing) {
   padding-left: 4ch;
   text-indent: -4ch;
   color: var(--ash);
-}
-
-.term-word {
-  white-space: pre;
 }
 
 .term-cmd {
@@ -360,85 +408,10 @@ html:has(.landing) {
   color: var(--red);
 }
 
-.term-caret {
-  display: inline-block;
-  width: 0.6em;
-  height: 1.15em;
-  vertical-align: text-bottom;
-  background: var(--bone);
-  animation: caret 1.1s steps(1) infinite;
-}
-
-.term-block.is-typing .term-caret {
-  animation: none;
-}
-
-@keyframes caret {
-  50% { opacity: 0; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .term-crack {
-    transition: none;
-  }
-
-  .term-block.is-active .term-line:not(.term-cmd),
-  .term-caret {
-    animation: none;
-  }
-}
-
-.session-notes {
-  list-style: none;
-  margin: 0;
-  padding: 0 0 30vh;
-}
-
-.note {
-  min-height: 88vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  max-width: 36ch;
-  opacity: 0.35;
-  transition: opacity 500ms var(--ease-out);
-}
-
-.note.is-active {
-  opacity: 1;
-}
-
-.note h2 {
-  margin: 0 0 16px;
-  font-family: var(--font-heading), system-ui, sans-serif;
-  font-weight: 700;
-  font-size: clamp(1.75rem, 2.8vw, 2.5rem);
-  line-height: 1.12;
-  letter-spacing: -0.01em;
-  text-wrap: balance;
-}
-
-.note p {
-  margin: 0;
-  font-size: 1.0625rem;
-  line-height: 1.6;
-  color: var(--ash);
-  text-wrap: pretty;
-}
-
-.term-inline {
-  display: none;
-}
-
-.session-provenance {
-  display: none;
-  font-size: 0.8125rem;
-  color: var(--dim);
-}
-
 /* ── Network ── */
 
 .network {
+  position: relative;
   max-width: 1320px;
   margin: 0 auto;
   padding: clamp(96px, 16vh, 180px) var(--gutter) 0;
@@ -451,11 +424,12 @@ html:has(.landing) {
 .network-copy h2 {
   margin: 0 0 16px;
   max-width: 16ch;
-  font-family: var(--font-heading), system-ui, sans-serif;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  text-shadow: var(--glow);
   font-weight: 700;
-  font-size: clamp(1.75rem, 2.8vw, 2.5rem);
-  line-height: 1.12;
-  letter-spacing: -0.01em;
+  font-size: clamp(1.5rem, 2.4vw, 2.125rem);
+  line-height: 1.15;
+  letter-spacing: 0.02em;
   text-wrap: balance;
 }
 
@@ -468,12 +442,15 @@ html:has(.landing) {
 }
 
 .network-stage {
+  position: relative;
   display: flex;
   justify-content: center;
   min-width: 0;
 }
 
 .network-canvas {
+  position: relative;
+  z-index: 1;
   display: block;
   font-family: var(--font-mono), ui-monospace, monospace;
   touch-action: manipulation;
@@ -497,30 +474,16 @@ html:has(.landing) {
   padding: clamp(120px, 22vh, 220px) var(--gutter) clamp(96px, 16vh, 160px);
 }
 
-/* Full-bleed behind the close's column, melting into black at both edges. */
-.close-video {
-  position: absolute;
-  z-index: -1;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  width: 100vw;
-  height: 100%;
-  translate: -50% 0;
-  object-fit: cover;
-  opacity: 0.55;
-  pointer-events: none;
-  mask-image: linear-gradient(to bottom, transparent, #000 30%, #000 70%, transparent);
-}
 
 .close h2 {
   margin: 0 0 40px;
   max-width: 18ch;
-  font-family: var(--font-heading), system-ui, sans-serif;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  text-shadow: var(--glow);
   font-weight: 700;
-  font-size: clamp(2.25rem, 5vw, 4rem);
+  font-size: clamp(2rem, 4.4vw, 3.5rem);
   line-height: 1.05;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.02em;
   text-wrap: balance;
 }
 
@@ -530,7 +493,6 @@ html:has(.landing) {
   max-width: 760px;
   background: var(--panel);
   border: 1px solid var(--rule);
-  border-radius: 8px;
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 0.875rem;
 }
@@ -552,7 +514,6 @@ html:has(.landing) {
   padding: 0 18px;
   border: 0;
   border-left: 1px solid var(--rule);
-  border-radius: 0 8px 8px 0;
   background: transparent;
   font: inherit;
   cursor: pointer;
@@ -560,7 +521,8 @@ html:has(.landing) {
 }
 
 .install-copy:hover {
-  background: #17171a;
+  background: var(--rule);
+  text-shadow: var(--glow);
 }
 
 .close-needs {
@@ -575,16 +537,79 @@ html:has(.landing) {
   align-items: center;
   gap: 12px;
   padding: 16px 24px;
-  border-radius: 999px;
   background: var(--bone);
   color: #000 !important;
-  font-weight: 500;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  box-shadow: 0 0 18px oklch(0.987 0.002 197.1 / 0.18);
   transition: gap 300ms var(--ease-out), background-color 200ms var(--ease-out);
 }
 
 .close-link:hover {
   gap: 18px;
-  background: #ffffff;
+  box-shadow: 0 0 28px oklch(0.987 0.002 197.1 / 0.35);
+}
+
+/* ── Section dots (after or13.io's slide nav) ── */
+
+.dots {
+  position: fixed;
+  top: 50%;
+  right: clamp(12px, 2vw, 32px);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  translate: 0 -50%;
+}
+
+.dot {
+  position: relative;
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ash);
+  opacity: 0.4;
+  transition: opacity 200ms var(--ease-out), scale 200ms var(--ease-out);
+}
+
+.dot:hover {
+  opacity: 0.8;
+}
+
+.dot.is-active {
+  opacity: 1;
+  scale: 1.3;
+  background: var(--bone);
+  box-shadow: 0 0 6px 2px oklch(0.76 0.11 250 / 0.7);
+}
+
+.dot-label {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  translate: 0 -50%;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  color: var(--ash);
+  opacity: 0;
+  transition: opacity 200ms var(--ease-out);
+  pointer-events: none;
+}
+
+.dot:hover .dot-label,
+.dot:focus-visible .dot-label {
+  opacity: 1;
+}
+
+@media (max-width: 640px) {
+  .dots {
+    display: none;
+  }
 }
 
 /* ── Footer ── */
@@ -608,16 +633,19 @@ html:has(.landing) {
 /* ── Narrow screens: each note carries its own excerpt ── */
 
 @media (max-width: 900px) {
-  .session {
+  .step {
     display: block;
+    min-height: 0;
+    padding: 96px var(--gutter);
   }
 
-  .session-term-col {
+  .step .term {
+    margin-top: 28px;
+  }
+
+  /* The path wraps on phones; the provenance is the part that matters. */
+  .term-bar span:first-child {
     display: none;
-  }
-
-  .session-notes {
-    padding-bottom: 0;
   }
 
   .network {
@@ -633,31 +661,6 @@ html:has(.landing) {
     margin-top: 12px;
   }
 
-  .session-provenance {
-    display: block;
-    padding-top: 48px;
-  }
-
-  .note {
-    min-height: 0;
-    max-width: none;
-    opacity: 1;
-    padding: 72px 0;
-  }
-
-  .note p {
-    max-width: 44ch;
-  }
-
-  .term-inline {
-    display: block;
-    overflow-x: auto;
-    margin-top: 28px;
-    padding: 14px 16px;
-    font-size: 0.75rem;
-    background: rgb(10 10 11 / 0.92);
-  }
-
   .install {
     flex-direction: column;
   }
@@ -666,6 +669,5 @@ html:has(.landing) {
     padding: 12px 18px;
     border-left: 0;
     border-top: 1px solid var(--rule);
-    border-radius: 0 0 8px 8px;
   }
 }

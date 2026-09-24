@@ -12,9 +12,11 @@ const GlobeWithGlitch = dynamic(() => import("./GlobeWithGlitch"), {
 export default function GlobeLoader({
   backdrop = false,
   controlsSelector,
+  paused,
 }: {
   backdrop?: boolean;
   controlsSelector?: string;
+  paused?: boolean;
 }) {
-  return <GlobeWithGlitch backdrop={backdrop} controlsSelector={controlsSelector} />;
+  return <GlobeWithGlitch backdrop={backdrop} controlsSelector={controlsSelector} paused={paused} />;
 }
