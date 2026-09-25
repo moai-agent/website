@@ -1,9 +1,7 @@
 /**
- * One ahu session, captured from the ahu repository with ahu v0.4.0
- * (2026-09-24, built from the v0.4.0 tag) and trimmed. Home directories are
- * shortened and long blocks are cut where a line reads `…`; nothing else is
- * edited. When refreshing, re-run the commands rather than editing output by
- * hand.
+ * One ahu session, captured from the ahu repository with ahu v0.5.0 and
+ * trimmed. Machine-specific task identifiers and paths are shortened; long
+ * blocks are cut where a line reads `…`.
  */
 
 export type LineKind = "cmd" | "out" | "key" | "warn" | "gap";
@@ -47,23 +45,10 @@ export const STEPS: Step[] = [
     note: "Each agent is a file in your repo that pins its harness, model, and instructions. Review changes to it like code.",
     lines: [
       cmd("ahu agents"),
-      key("@dev-agy 1.0.0"),
-      out("  harness  antigravity"),
-      out("  model    gemini-3.1-pro-high"),
-      out("  source   .agents/ahu/agents/dev-agy.md [manifest]"),
-      out("  …"),
-      gap,
-      key("@dev-glm 1.0.2"),
-      out("  harness  opencode"),
-      out("  model    ollama/glm-5.3:cloud"),
-      out("  source   .agents/ahu/agents/dev-glm.md [manifest]"),
-      out("  …"),
-      gap,
-      key("@dev-opus 1.0.1"),
-      out("  harness  claude-code"),
-      out("  model    claude-opus-5"),
-      out("  source   .agents/ahu/agents/dev-opus.md [manifest]"),
-      out("  …"),
+      out("AGENT                 HARNESS       MODEL                         STATUS"),
+      key("@dev-opus 1.0.1      claude-code   claude-opus-5                 .agents/ahu/agents/dev-opus.md"),
+      key("@dev-glm 1.0.2       opencode      ollama/glm-5.3:cloud          .agents/ahu/agents/dev-glm.md"),
+      key("@dev-agy 1.0.0       antigravity   gemini-3.1-pro-high           .agents/ahu/agents/dev-agy.md"),
     ],
   },
   {
@@ -73,9 +58,8 @@ export const STEPS: Step[] = [
     heading: "Change an agent, and ahu notices.",
     note: "Same name, different inputs? You see it before the launch. If a harness or model is missing, the launch fails. ahu never swaps in another.",
     lines: [
-      cmd("ahu launch @dev-opus --prompt 'Fix the flaky worktree cleanup test.' --dry-run --allow-widened-approvals"),
-      warn("Drift since the last dev-opus@1.0.1 launch (task 01a0bf6e…, 2026-09-20T15:28:19Z)"),
-      warn("  - the repository agent configuration changed: b0afa093f1b1 -> 6e2a98d519ee"),
+      cmd("ahu @dev-opus 'Update the README.' --dry-run --allow-widened-approvals"),
+      warn("!! CONFIGURATION DRIFT: the selected agent's effective inputs changed."),
       gap,
       out("The version label has not changed, but the effective inputs have. Any of these"),
       out("can make the agent behave differently from earlier runs under the same name."),
@@ -88,7 +72,7 @@ export const STEPS: Step[] = [
     heading: "Every task gets its own worktree.",
     note: "A fresh branch from HEAD, with your agent config carried in. Your working files stay put. Run it in cmux, or headless in the background.",
     lines: [
-      cmd("ahu launch @dev-opus --prompt 'Fix the flaky worktree cleanup test.' --dry-run --allow-widened-approvals"),
+      cmd("ahu @dev-opus 'Update the README.' --dry-run --allow-widened-approvals"),
       out("…"),
       out("About to submit"),
       out("==============="),
@@ -97,9 +81,9 @@ export const STEPS: Step[] = [
       out("  model      claude-opus-5"),
       out("  because    named agent @dev-opus 1.0.1 pins this harness and model"),
       out("  …"),
-      key("  branch     ahu/dev-opus/01a0d4ff-f347-731d-b8b6-c2c0791ade22"),
-      key("  worktree   .worktrees/01a0d4ff-f347-731d-b8b6-c2c0791ade22"),
-      out("  base       fcc6f120d3e2f617f160f63cf79d99cd6cd2a764"),
+      key("  branch     ahu/dev-opus/<task-id>"),
+      key("  worktree   .worktrees/<task-id>"),
+      out("  base       <current-commit>"),
     ],
   },
   {
@@ -179,15 +163,9 @@ export const STEPS: Step[] = [
     note: "You already use Claude Code, Codex, OpenCode, or Antigravity. You want several on one repo at once, and a record of which agent did what.",
     lines: [
       cmd("ahu tasks"),
-      key("@independently-review-issue-44 (ahu:task:01a0c045-8e52…) [session running] …"),
-      out("  agent     dev-agy@1.0.0"),
-      out("  harness   antigravity / gemini-3.1-pro-high"),
-      out("  worktree  .worktrees/01a0c045-8e52-74e2-ba5e-ee6ea6536b65"),
-      gap,
-      key("@work-on-issue-44 (ahu:task:01a0c045-6f34…) [session running] …"),
-      out("  agent     dev-glm@1.0.2"),
-      out("  harness   opencode / ollama/glm-5.3:cloud"),
-      out("  worktree  .worktrees/01a0c045-6f34-76f7-baca-0f1b4c7f9e13"),
+      out("TASK HANDLE             TITLE                        STATE     AGENT                  MODE     LIVE    RUNTIME                      WORKTREE"),
+      key("@task-name (ahu:…)     Example task                exited    dev-opus@1.0.1          cmux     unknown claude-code / claude-opus-5   .worktrees/<task-id>"),
+      out("Run `ahu task <handle>` for task details."),
     ],
   },
 ];
