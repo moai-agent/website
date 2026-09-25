@@ -2,8 +2,8 @@
 
 The home of [ahu](https://github.com/moai-agent/ahu), and the site's only page.
 A GPU particle moai (drag it to rotate and glitch) opens the page. Each step
-below is its own linkable section with a replayable xterm.js terminal of real
-ahu output. The page ends with a map of the ahu repository's own agents,
+below is its own linkable section with a replayable xterm.js terminal playing an
+illustrative ahu session. The page ends with a map of the ahu repository's own agents,
 harnesses, and models.
 
 ## Stack
@@ -16,16 +16,19 @@ harnesses, and models.
 
 ## Content
 
-Everything the page shows as ahu output is real, captured with ahu v0.4.0 from
-the ahu repository and trimmed with visible `…` markers:
+Every terminal and the network map show illustrative, synthetic examples. They
+follow ahu's current (v0.5.0) command syntax and general output shape, but
+agent names, task handles, IDs, hashes, versions and paths are placeholders:
 
-- `src/components/Landing/transcript.ts`: every step's heading, note, backdrop and terminal transcript.
-- `src/components/Landing/registry.ts`: the agent, harness, model, and task
-  snapshot behind the network graph.
+- `src/components/Landing/transcript.ts`: every step's heading, note, backdrop
+  and example terminal session.
+- `src/components/Landing/registry.ts`: the example agents, harnesses, models
+  and tasks behind the network map.
 
-Refresh both by re-running the commands named in each file's header, not by
-editing output by hand. `PRODUCT.md` and `DESIGN.md` record the audience,
-voice, and visual rules.
+Do not paste real task IDs, terminal output, execution traces, or local paths
+into these files. When ahu's CLI changes, update the examples to the new
+syntax by hand. `PRODUCT.md` and `DESIGN.md` record the audience, voice, and
+visual rules.
 
 ## Develop
 
@@ -53,8 +56,9 @@ domain to `moai-agent.com`.
 `public/media/` holds web encodes of licensed stock assets from the or13.io
 library. There are five video loops, each 20–27s forward-then-reverse, as WebM
 and MP4 with a poster frame: `after-hours`, `dark-water`, `underground`,
-`container-port` and `landfill`. There are also two photographs, `gutted-tv`
-and `decay-corridor`, and the cracked-glass overlay. Each is used once on the
+`container-port` and `landfill`. There are also four photographs (`overgrown-tracks`,
+`gutted-tv`, `broken-windows` and `decay-corridor`) and the cracked-glass
+overlay. Each is used once on the
 page; DESIGN.md's One Asset Per Section table maps them to sections.
 Full-resolution sources live in `assets/originals/`, which is not committed.
 Keep the vendor and license record with those sources.

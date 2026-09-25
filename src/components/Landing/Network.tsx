@@ -239,14 +239,14 @@ export default function Network() {
         <h2 id="network-heading">
           {AGENTS.length} agents. {HARNESSES.length} harnesses. One repo.
         </h2>
-        <p>The ahu repository runs on ahu. Blue agents are mid-task. Hover or tap to trace one.</p>
+        <p>Every agent pinned to one harness and one model. Blue agents are mid-task. Hover or tap to trace one.</p>
       </div>
       <div className="network-stage" ref={wrapRef}>
         <canvas
           ref={canvasRef}
           className="network-canvas"
           role="img"
-          aria-label={`${AGENTS.length} agents in the ahu repository across ${HARNESSES.length} harnesses, each harness pinned to one model, with ${TASKS.length} tasks running.`}
+          aria-label={`${AGENTS.length} agents in an illustrative repository across ${HARNESSES.length} harnesses, each harness pinned to one model, with ${TASKS.length} tasks running.`}
         />
       </div>
       <ul className="sr-only">
@@ -257,7 +257,7 @@ export default function Network() {
           </li>
         ))}
       </ul>
-      <p className="network-source">Snapshot of ahu agents and ahu tasks, v0.4.0, 24 Sep 2026.</p>
+      <p className="network-source">An illustrative repository. Agent and task names are examples.</p>
     </section>
   );
 }

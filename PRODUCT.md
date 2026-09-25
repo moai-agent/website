@@ -27,11 +27,11 @@ An ahu agent is a named, reviewable identity (name, harness, exact model, instru
 
 ## Capabilities and Constraints
 
-- Commands: `ahu`, `ahu doctor`, `ahu agents`, `ahu launch @agent`, `ahu tasks`, `ahu task`, `ahu diff`, `ahu result`, `ahu focus`, `ahu cancel`, `ahu inventory`, `ahu hygiene`, `ahu explain`, `ahu mcp serve`.
+- Commands: `ahu`, `ahu @agent [prompt]`, `ahu doctor`, `ahu agents`, `ahu launch @agent` (backward-compatible), `ahu tasks`, `ahu task`, `ahu diff`, `ahu result`, `ahu focus`, `ahu cancel`, `ahu inventory`, `ahu hygiene`, `ahu explain`, `ahu mcp serve`.
 - Prompt delivery in nonce-bearing sections (contract, state, instructions, task); prompt text, not an enforced system prompt.
 - Headless child dispatch requires explicit host grants.
 - ahu holds no provider credentials and installs no harnesses.
-- Public at https://github.com/moai-agent/ahu, pre-1.0 (latest: v0.4.0, a GitHub pre-release published 2026-09-24). Install: `cargo install --git https://github.com/moai-agent/ahu --locked`. Call it early; make no stability claims.
+- Public at https://github.com/moai-agent/ahu, pre-1.0 (latest published: v0.4.0 pre-release; v0.5.0 prepared locally). Install: `cargo install --git https://github.com/moai-agent/ahu --locked`. Call it early; make no stability claims.
 - The site's job is to send developers to the GitHub repo to try ahu and give feedback.
 - One page for as long as possible. Static export (Next.js `output: "export"`) on GitHub Pages; no backend.
 
@@ -59,7 +59,7 @@ TLDR: ahu launches named coding agents, each pinned to its harness and model, in
 
 ### Personality
 
-**Precise · Honest · Crafted.** Inherited from or13.io's "Bold · Experimental · Crafted", turned toward a tool: the craft still shows, but every claim is a line ahu actually prints.
+**Precise · Honest · Crafted.** Inherited from or13.io's "Bold · Experimental · Crafted", turned toward a tool: the craft still shows, but every claim matches what ahu does, and every example is labelled as one.
 
 ### Anti-references
 
@@ -77,9 +77,9 @@ TLDR: ahu launches named coding agents, each pinned to its harness and model, in
 ## Evidence on Hand
 
 - Public ahu README (install, everyday use, agent table, command table).
-- `/ahu`: interactive topology explorer and four subsystem views (worktree airlock, dual runtimes, prompt pipeline, context horizon).
-- `/demo`: simulated multi-agent workspace graph.
-- `public/video/underground.mp4`, `public/cracked-glass.png`.
+- ahu v0.5.0 command syntax: `ahu @agent [prompt]` (no prompt opens the launcher with the agent preselected), the backward-compatible `ahu launch @agent`, `ahu doctor`, `ahu agents` with drift status, and compact `ahu tasks`.
+- Licensed or13.io media library (videos and photographs in `public/media/`).
+- Examples on the site are synthetic: never publish real task IDs, terminal output, execution traces, or local paths.
 - No users, testimonials, benchmarks, or adoption numbers. Do not invent them.
 - The "why" paraphrases the maintainer's own design principles; keep private planning material off the site.
 

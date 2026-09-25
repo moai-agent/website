@@ -1,8 +1,8 @@
 /**
- * The ahu repository's own agents and running tasks, from `ahu agents` and
- * `ahu tasks` run with ahu v0.4.0 on 2026-09-24. Only handles, versions,
- * harnesses, and models are kept; task titles stay out. Refresh by re-running
- * both commands.
+ * An illustrative repository for the network map. Every agent handle, version
+ * and task below is a synthetic example, not a snapshot of any real registry
+ * or task list. Harness and model names are real products so the map reads
+ * truthfully about what ahu supports.
  */
 
 export interface Harness {
@@ -21,7 +21,7 @@ export interface Task {
   agent: string;
 }
 
-export const REPO = "moai-agent/ahu";
+export const REPO = "example/app";
 
 export const HARNESSES: Harness[] = [
   { id: "claude-code", model: "claude-opus-5" },
@@ -31,30 +31,24 @@ export const HARNESSES: Harness[] = [
 ];
 
 export const AGENTS: Agent[] = [
-  { handle: "@arch-opus", version: "1.0.0", harness: "claude-code" },
-  { handle: "@defsec-opus", version: "1.0.0", harness: "claude-code" },
-  { handle: "@dev-opus", version: "1.0.1", harness: "claude-code" },
-  { handle: "@docs-opus", version: "1.0.0", harness: "claude-code" },
-  { handle: "@arch-astra", version: "1.0.0", harness: "codex" },
-  { handle: "@defsec-astra", version: "1.0.1", harness: "codex" },
-  { handle: "@dev-astra", version: "1.0.1", harness: "codex" },
-  { handle: "@docs-astra", version: "1.1.1", harness: "codex" },
-  { handle: "@offsec-astra", version: "1.0.1", harness: "codex" },
-  { handle: "@roadmap-architect", version: "1.0.0", harness: "codex" },
-  { handle: "@roadmap-product-manager", version: "1.0.0", harness: "codex" },
-  { handle: "@dev-agy", version: "1.0.0", harness: "antigravity" },
-  { handle: "@arch-glm", version: "1.0.0", harness: "opencode" },
-  { handle: "@defsec-glm", version: "1.0.1", harness: "opencode" },
-  { handle: "@dev-glm", version: "1.0.2", harness: "opencode" },
-  { handle: "@docs-glm", version: "1.1.1", harness: "opencode" },
+  { handle: "@architect", version: "1.0.0", harness: "claude-code" },
+  { handle: "@security", version: "1.0.0", harness: "claude-code" },
+  { handle: "@writer", version: "1.0.0", harness: "claude-code" },
+  { handle: "@builder", version: "1.2.0", harness: "codex" },
+  { handle: "@planner", version: "1.0.0", harness: "codex" },
+  { handle: "@tester", version: "1.0.1", harness: "codex" },
+  { handle: "@migrator", version: "1.0.0", harness: "codex" },
+  { handle: "@researcher", version: "1.0.0", harness: "antigravity" },
+  { handle: "@reviewer", version: "1.1.0", harness: "opencode" },
+  { handle: "@triager", version: "1.0.0", harness: "opencode" },
+  { handle: "@linter", version: "1.0.0", harness: "opencode" },
 ];
 
 export const TASKS: Task[] = [
-  { handle: "@review-the-current-ahu-2", agent: "@docs-astra" },
-  { handle: "@independently-review-the-current", agent: "@dev-agy" },
-  { handle: "@complete-roadmap-issue-40", agent: "@docs-glm" },
-  { handle: "@independently-review-issue-44", agent: "@dev-agy" },
-  { handle: "@work-on-issue-44", agent: "@dev-glm" },
+  { handle: "@fix-flaky-test", agent: "@builder" },
+  { handle: "@review-fix", agent: "@reviewer" },
+  { handle: "@survey-options", agent: "@researcher" },
+  { handle: "@threat-model", agent: "@security" },
 ];
 
 export type NodeKind = "repo" | "task" | "agent" | "harness" | "model";

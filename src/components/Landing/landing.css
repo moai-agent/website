@@ -359,6 +359,23 @@ h2:hover .anchor,
   font-family: var(--font-mono), ui-monospace, monospace;
 }
 
+/* Wide tables scroll sideways inside the panel instead of wrapping. */
+.term-xterm.is-wide {
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--rule) transparent;
+}
+
+.term-static.is-wide {
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.term-static.is-wide .term-line {
+  padding-left: 0;
+  text-indent: 0;
+}
+
 .term-xterm:not(.is-live) {
   margin-block: 0;
 }

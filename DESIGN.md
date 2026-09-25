@@ -1,6 +1,6 @@
 ---
 name: moai-agent / ahu
-description: One real ahu terminal session in or13.io's phosphor neutrals, under a particle moai on a black ground.
+description: Illustrative ahu terminal sessions in or13.io's phosphor neutrals, under a particle moai on a black ground.
 colors:
   signal-red: "oklch(0.68 0.19 28)"
   handle-blue: "oklch(0.76 0.11 250)"
@@ -142,7 +142,7 @@ The page is a stone head made of light, then one ahu terminal session told in or
 
 The particle moai lives only in the hero. It fills the first viewport, is rotated by dragging anywhere on the hero, and stops rendering once the hero scrolls away. Below it, each section carries at most one artwork and none repeats: a graded or13.io video or the cracked glass behind some session steps (see One Asset Per Section), nothing behind the network map, and nothing behind the close.
 
-Density is deliberately low. Each idea gets a whole viewport of scroll: a short mono heading, one Lexend sentence, and the command that proves it. Every step is its own linkable section with its own replayable terminal that types its real output as it scrolls into view. There are no cards, no feature grids, and no decorative illustration. The only colour is signal: red for the prompt and warnings, blue for agent handles, focus and the active section dot.
+Density is deliberately low. Each idea gets a whole viewport of scroll: a short mono heading, one Lexend sentence, and an illustrative command that shows it. Every step is its own linkable section with its own replayable terminal that types an illustrative session as it scrolls into view. There are no cards, no feature grids, and no decorative illustration. The only colour is signal: red for the prompt and warnings, blue for agent handles, focus and the active section dot.
 
 The CRT tear on the `ahu` wordmark is the one place the page glitches. It stays intermittent (a 4s cycle that bursts through its first 20% and holds closed) so it reads as signal loss, not noise.
 
@@ -164,7 +164,7 @@ ahu borrows or13.io's aesthetic, which that site's `/brand/aesthetic` page names
 - **Square corners.** or13.io sets `--radius: 0`.
 - **Mono display with a glow.** or13.io's dark-mode headings, buttons and badges are mono with `text-shadow: 0 0 5px` at 30% foreground. ahu sets them in Atkinson Hyperlegible Mono for legibility.
 - **The RGB tear.** It comes from or13.io's GlitchText and is used once, on the wordmark.
-- **Footage as place.** or13.io's videography grade is saturate 0.4, brightness 0.5, contrast 1.2. ahu uses five clips from that library (After Hours, Dark Water, Subterranean, Container Port and Landfill) and two photographs (Gutted and Last Exit). Each is used once.
+- **Footage as place.** or13.io's videography grade is saturate 0.4, brightness 0.5, contrast 1.2. ahu uses five clips from that library (After Hours, Dark Water, Subterranean, Container Port and Landfill) and four photographs (Terminus, Gutted, Keep Out and Last Exit). Each is used once.
 - **Cracked glass.** or13.io's CrackedGlass overlay, screened in dark mode, as the drift step's artwork.
 - **Slide dots.** or13.io's right-edge slide nav, as section dots.
 
@@ -201,7 +201,7 @@ A cool, faintly cyan-grey ramp from black to bone (hue around 205 to 229, chroma
 - **Signal Red** (signal-red): the shell prompt `$`, warning lines in the transcript (drift, missing context), the red fringe of the wordmark tear, and text selection (at 45% alpha). It marks "this is the command" or "this needs your attention."
 
 ### Secondary
-- **Handle Blue** (handle-blue): agent handles and keys in terminal output (`@dev-agy 1.0.0`), busy agents on the network map, the focus ring, and the halo of the active section dot. It marks identity or position: a named thing you can address, or where you are.
+- **Handle Blue** (handle-blue): agent handles and keys in terminal output (`@researcher 1.0.0`), busy agents on the network map, the focus ring, and the halo of the active section dot. It marks identity or position: a named thing you can address, or where you are.
 
 ### Neutral
 - **Ground** (ground): the page background, the hero, the footer, the browser theme colour. Pure black, so the particles read as light.
@@ -242,7 +242,7 @@ A cool, faintly cyan-grey ramp from black to bone (hue around 205 to 229, chroma
 - **Caption** (Lexend 400, 0.8125rem, dim): footer, provenance and the network source line.
 
 ### Named Rules
-**The Real Output Rule.** Mono is the voice of headings and controls, but anything shaped like terminal output must be text ahu actually prints or a command a person actually types. Prose sentences stay in Lexend.
+**The Illustrative Example Rule.** Anything shaped like terminal output is a synthetic, clearly labelled example that follows ahu's current command syntax and general output shape. Agent names, task handles, IDs, hashes, versions and paths are placeholders (`@builder`, `[task-id]`, `[base-commit]`, `[old-digest]`, `example/app`). Never copy real task IDs, terminal output, execution traces, or local or home-directory paths into website source. Every terminal is labelled "illustrative". Prose sentences stay in Lexend.
 
 **The Unbroken Argument Rule.** Terminal lines wrap only between arguments; a path, URL or flag never splits mid-token. Wrapped lines hang-indent 4ch under the prompt.
 
@@ -300,15 +300,15 @@ Quiet and direct: square buttons that point at GitHub.
 Each step is its own full-viewport section with a stable `id`. It has a mono title with glow and one ash Lexend sentence (max 36ch) on the left (2fr), and its own terminal on the right (3fr). At most one artwork sits full-bleed behind it, masked to black at the top and bottom so neighbouring sections meet cleanly. Below 900px the copy stacks above the terminal.
 
 ### Terminal (signature, after or13.io's XtermTerminal)
-Every step has its own xterm.js emulator in a square panel with a hairline border and the terminal lift shadow.
-- **Title bar:** 0.75rem dim, repo path left (hidden on phones), "ahu v0.4.0 · real output, trimmed" right.
+Every step has its own xterm.js emulator playing a synthetic example in a square panel with a hairline border and the terminal lift shadow.
+- **Title bar:** 0.75rem dim, `example/app` left (hidden on phones), "illustrative · ahu v0.5.0 syntax" right.
 - **Theme:** the landing tokens as truecolor escapes. Command in bone after a red `$ `, output in ash, agent handles in blue, warnings in red, on the panel colour. Atkinson Hyperlegible Mono, 13px (11px on phones), line height 1.4, blinking block cursor.
 - **Playback:** built 400px before it reaches the viewport. When 35% visible it types the command two characters every 16ms, then prints each output line 45ms apart. The terminal is sized to its wrapped transcript, so it never needs to scroll and never traps the wheel.
 - **Replay shell:** afterwards a prompt waits. The step's own command replays the recording, `help` says what this is, `clear` clears, and anything else answers "not in this recording. Install ahu to run it for real." Nothing is executed.
 - **Fallbacks:** the same transcript renders as a static `<pre>` without JavaScript, and stays in the DOM as sr-only text for screen readers. Reduced motion prints everything at once.
 
 ### Network Map (signature)
-A canvas map of the ahu repository's real registry (`registry.ts`): the repo at the centre, running tasks on the inner ring, agents fanned across one quadrant per harness, and each harness's pinned model on its axis. Hairline bone edges at 14% opacity (55% when traced); agents are blue when mid-task and blue at 40% when idle; harnesses are hollow bone rings on black; tasks are dim. Harness, model and repo labels are always shown in mono 11 to 12px; agent and task labels appear only on the traced path. One bone comet per running task rides its route from repo to model on a staggered 5.2s cycle. Hover or tap traces a node's connections and fades the rest to 18%. Animation pauses offscreen and is off under reduced motion; an sr-only list carries the same registry. It has no background: the visual stands on its own.
+A canvas map of an illustrative repository (`registry.ts`, synthetic agents and tasks): the repo at the centre, running tasks on the inner ring, agents fanned across one quadrant per harness, and each harness's pinned model on its axis. Hairline bone edges at 14% opacity (55% when traced); agents are blue when mid-task and blue at 40% when idle; harnesses are hollow bone rings on black; tasks are dim. Harness, model and repo labels are always shown in mono 11 to 12px; agent and task labels appear only on the traced path. One bone comet per running task rides its route from repo to model on a staggered 5.2s cycle. Hover or tap traces a node's connections and fades the rest to 18%. Animation pauses offscreen and is off under reduced motion; an sr-only list carries the same registry. It has no background: the visual stands on its own.
 
 ### One Asset Per Section (rule)
 Every section carries at most one background image or major artwork, and no asset appears twice. Each session step is its own section with its own artwork layer; a video plays only while its section is on screen.
@@ -317,12 +317,14 @@ Every section carries at most one background image or major artwork, and no asse
 |---|---|
 | Hero `#top` | The particle moai; renders only while the hero is on screen |
 | A name should mean something `#names` | *After Hours* (or13.io `empty-lot`) video |
+| Name an agent to start `#start` | *Terminus* (or13.io `overgrown-tracks`) photo |
 | Change an agent, and ahu notices `#drift` | Cracked glass, screened at 35% |
 | Every task gets its own worktree `#worktree` | *Dark Water* (or13.io `polluted-canal`) video |
 | It says what it can't see `#horizon` | *Subterranean* (or13.io `underground`) video |
 | Skills are context `#skills` | *Gutted* (or13.io `gutted-tv`) photo |
 | Your coordinator can ask ahu over MCP `#mcp` | *Container Port* (or13.io `container-port`) video |
 | Telemetry is off until you opt in `#telemetry` | *Landfill* (or13.io `landfill`) video |
+| One command checks all of it `#doctor` | *Keep Out* (or13.io `broken-windows`) photo |
 | Try it when one agent isn't enough `#when` | *Last Exit* (or13.io `decay-corridor`) photo |
 | Network map `#network` | none. The visual stands on its own |
 | Install `#install` | none |
@@ -339,7 +341,7 @@ The `ahu` display mark with two pseudo-element copies (red-shifted and blue-shif
 
 ### Do:
 - **Do** keep the ground pure black (#000000) and every neutral on the cool hue band.
-- **Do** put anything that looks like terminal output in the terminal panel, and make it real, captured ahu output.
+- **Do** put anything that looks like terminal output in the terminal panel, as a labelled synthetic example with placeholder names, IDs and paths.
 - **Do** reserve red for the prompt and warnings and blue for agent handles, focus and the active dot.
 - **Do** keep corners square; only the section dots are round.
 - **Do** give every animation a `prefers-reduced-motion` off switch, as the cue, caret, line-in, tear, map, video and smooth scroll already have.
@@ -350,7 +352,7 @@ The `ahu` display mark with two pseudo-element copies (red-shifted and blue-shif
 ### Don't:
 - **Don't** add cards, feature grids, or boxed marketing sections; the only bordered surfaces are the terminal, the install field and the top-bar link.
 - **Don't** use icons beyond the authored GitHub mark and arrow, and never emoji as icons.
-- **Don't** set prose sentences in mono, or invent terminal output.
+- **Don't** set prose sentences in mono, or paste real task IDs, terminal output, execution traces, or local paths into the site.
 - **Don't** give any section a second asset, or give the close one.
 - **Don't** glitch anything but the wordmark, and don't make the tear continuous.
 - **Don't** let a glow get bright enough to read as neon; it stays at the glow token's strength.

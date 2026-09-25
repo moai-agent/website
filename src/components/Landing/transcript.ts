@@ -1,8 +1,17 @@
 /**
- * One ahu session, captured from the ahu repository with ahu v0.5.0 and
- * trimmed. Machine-specific task identifiers and paths are shortened; long
- * blocks are cut where a line reads `…`.
+ * Illustrative ahu sessions. Every transcript here is synthetic: it follows
+ * the command syntax and general shape of ahu v0.5.0, but agent names, task
+ * handles, IDs, hashes, versions and paths are placeholders, not captured
+ * output. Never paste real task IDs, terminal output, execution traces, or
+ * local paths into this file.
  */
+
+/** The ahu release whose command syntax these examples follow. */
+export const AHU_VERSION = "v0.5.0";
+
+/** Bracketed placeholders: never shaped like a real ID, digest, or hash. */
+const TASK = "[task-id]";
+const BASE = "[base-commit]";
 
 export type LineKind = "cmd" | "out" | "key" | "warn" | "gap";
 
@@ -11,8 +20,10 @@ export interface Line {
   text: string;
 }
 
-/** The one artwork behind a step, or none. Each asset is used once. */
-/** video: a graded loop; photo: a graded still; overlay: screened cracks. */
+/**
+ * The one artwork behind a step, or none; each asset is used once.
+ * video: a graded loop; photo: a graded still; overlay: screened cracks.
+ */
 export type Backdrop =
   | { kind: "video"; name: string }
   | { kind: "photo"; src: string }
@@ -28,6 +39,8 @@ export interface Step {
   note: string;
   backdrop: Backdrop;
   lines: Line[];
+  /** Tables: keep rows unwrapped and let the terminal scroll sideways. */
+  wide?: boolean;
 }
 
 const cmd = (text: string): Line => ({ kind: "cmd", text });
@@ -42,13 +55,38 @@ export const STEPS: Step[] = [
     label: "Names",
     backdrop: { kind: "video", name: "after-hours" },
     heading: "A name should mean something.",
-    note: "Each agent is a file in your repo that pins its harness, model, and instructions. Review changes to it like code.",
+    note: "Each agent is a file in your repo that pins its harness, model, and instructions. ahu agents flags any whose inputs have drifted.",
+    wide: true,
     lines: [
       cmd("ahu agents"),
-      out("AGENT                 HARNESS       MODEL                         STATUS"),
-      key("@dev-opus 1.0.1      claude-code   claude-opus-5                 .agents/ahu/agents/dev-opus.md"),
-      key("@dev-glm 1.0.2       opencode      ollama/glm-5.3:cloud          .agents/ahu/agents/dev-glm.md"),
-      key("@dev-agy 1.0.0       antigravity   gemini-3.1-pro-high           .agents/ahu/agents/dev-agy.md"),
+      out("AGENT                    HARNESS       MODEL                  STATUS"),
+      key("@architect 1.0.0         claude-code   claude-opus-5          .agents/ahu/agents/architect.md"),
+      warn("@builder 1.2.0 [drifted] codex         gpt-6-astra            .agents/ahu/agents/builder.md"),
+      key("@researcher 1.0.0        antigravity   gemini-3.1-pro-high    .agents/ahu/agents/researcher.md"),
+      key("@reviewer 1.1.0          opencode      ollama/glm-5.3:cloud   .agents/ahu/agents/reviewer.md"),
+    ],
+  },
+  {
+    id: "start",
+    label: "Start",
+    backdrop: { kind: "photo", src: "/media/overgrown-tracks.webp" },
+    heading: "Name an agent to start.",
+    note: "ahu @agent opens the launcher with that agent already picked. Add a prompt to go straight to the preview. Pasting never submits.",
+    lines: [
+      cmd("ahu @reviewer"),
+      key("Preselected agent: @reviewer"),
+      gap,
+      out("Resolved for this task:"),
+      out("  agent   reviewer@1.1.0"),
+      out("  harness opencode"),
+      out("  model   ollama/glm-5.3:cloud"),
+      out("  because named agent @reviewer 1.1.0 pins this harness and model"),
+      gap,
+      out("Task prompt. Pasting does not submit; a confirmation follows the preview."),
+      out("  Finish with `.` on its own line. Cancel with `.cancel`."),
+      gap,
+      out(".cancel"),
+      out("Cancelled. Nothing was created."),
     ],
   },
   {
@@ -58,11 +96,12 @@ export const STEPS: Step[] = [
     heading: "Change an agent, and ahu notices.",
     note: "Same name, different inputs? You see it before the launch. If a harness or model is missing, the launch fails. ahu never swaps in another.",
     lines: [
-      cmd("ahu @dev-opus 'Update the README.' --dry-run --allow-widened-approvals"),
+      cmd("ahu @builder 'Fix the flaky cleanup test.' --dry-run"),
       warn("!! CONFIGURATION DRIFT: the selected agent's effective inputs changed."),
+      warn("  - agent configuration: [old-digest] -> [new-digest]"),
       gap,
-      out("The version label has not changed, but the effective inputs have. Any of these"),
-      out("can make the agent behave differently from earlier runs under the same name."),
+      out("builder@1.2.0 keeps its version label, but its inputs changed."),
+      out("Bump the version and record what changed before you rely on it."),
     ],
   },
   {
@@ -70,20 +109,17 @@ export const STEPS: Step[] = [
     label: "Worktrees",
     backdrop: { kind: "video", name: "dark-water" },
     heading: "Every task gets its own worktree.",
-    note: "A fresh branch from HEAD, with your agent config carried in. Your working files stay put. Run it in cmux, or headless in the background.",
+    note: "A fresh branch from HEAD, with your agent config carried in. Your working files stay put. Run it in cmux or headless. The older ahu launch @agent form still works.",
     lines: [
-      cmd("ahu @dev-opus 'Update the README.' --dry-run --allow-widened-approvals"),
-      out("…"),
+      cmd("ahu @builder 'Fix the flaky cleanup test.' --dry-run"),
       out("About to submit"),
-      out("==============="),
-      out("  agent      dev-opus@1.0.1"),
-      out("  harness    claude-code"),
-      out("  model      claude-opus-5"),
-      out("  because    named agent @dev-opus 1.0.1 pins this harness and model"),
-      out("  …"),
-      key("  branch     ahu/dev-opus/<task-id>"),
-      key("  worktree   .worktrees/<task-id>"),
-      out("  base       <current-commit>"),
+      out("  agent      builder@1.2.0"),
+      out("  harness    codex"),
+      out("  model      gpt-6-astra"),
+      out("  because    named agent @builder 1.2.0 pins this harness and model"),
+      key(`  branch     ahu/builder/${TASK}`),
+      key(`  worktree   .worktrees/${TASK}`),
+      out(`  base       ${BASE}`),
     ],
   },
   {
@@ -93,12 +129,12 @@ export const STEPS: Step[] = [
     heading: "It says what it can’t see.",
     note: "ahu lists the instructions, hooks, and settings it can find. Then it lists what it can’t.",
     lines: [
-      cmd("ahu inventory @dev-opus"),
+      cmd("ahu inventory @architect"),
       out("…"),
       out("What ahu cannot see"),
-      out("  - claude-code does not report to ahu which of the available sources it actually loaded into the model's context"),
-      out("  - retrieval, compaction summaries, and conversation transformations inside a running session are not observable from outside it"),
-      out("  - the model is set at launch with --model, but an interactive session can change it with /model"),
+      out("  - which available sources the harness actually loaded into context"),
+      out("  - retrieval, compaction, and rewrites inside a running session"),
+      out("  - a model switch made inside the session after launch"),
       gap,
       warn("This inventory is not complete."),
     ],
@@ -110,22 +146,17 @@ export const STEPS: Step[] = [
     heading: "Skills are context. ahu keeps them in view.",
     note: "Every skill an agent can load is listed with where it lives and who controls it. ahu proposes cleanup on a project cadence and never deletes anything itself.",
     lines: [
-      cmd("ahu hygiene @dev-opus"),
-      out("Context hygiene review for dev-opus@1.0.1 (requested)"),
-      out("Project cadence: every 7 day(s), set by context_hygiene.review_interval_days in ~/github.com/moai-agent/ahu/.agents/ahu/config.toml."),
+      cmd("ahu hygiene @architect"),
+      out("Context hygiene review for architect@1.0.0"),
+      out("Project cadence: every 7 day(s)"),
       gap,
       out("Sources that may influence this agent:"),
-      out("  - .agents/skills/context-hygiene/SKILL.md [skill, repository, shared]"),
-      out("      at .agents/skills/context-hygiene/SKILL.md"),
+      out("  - .agents/skills/code-review/SKILL.md [skill, repository, shared]"),
       out("      control: repository-edit"),
-      out("  …"),
-      out("  - skills [skill, user, shared]"),
-      out("      at ~/.claude/skills"),
+      out("  - user skills [skill, user, shared]"),
       out("      control: harness-setting"),
-      out("  …"),
       gap,
-      warn("Nothing has been changed. ahu does not purge memory, prune skills, disable"),
-      warn("imported capabilities, or stage or commit anything on your behalf."),
+      warn("Nothing was changed. ahu proposes cleanup; it never deletes, disables, or commits for you."),
     ],
   },
   {
@@ -135,11 +166,11 @@ export const STEPS: Step[] = [
     heading: "Your coordinator can ask ahu over MCP.",
     note: "ahu mcp serve answers read-only questions about this repo's agents and tasks over stdio. It inspects. It never launches, merges, or approves work.",
     lines: [
-      out("# tools_list holds a 2026-07-28 MCP tools/list request"),
-      cmd(`echo "$tools_list" | ahu mcp serve | jq -r '.result.tools[] | "\\(.name)  \\(.description)"'`),
-      key("ahu_agents_list  List launchable ahu agents registered in this repository."),
-      key("ahu_tasks_list  List ahu tasks belonging to this repository, including canonical IDs and verified @name handles."),
-      key("ahu_task_get  Inspect one ahu task by canonical ID, unique prefix, or exact @name handle."),
+      out("# list the tools ahu mcp serve offers (a tools/list request)"),
+      cmd(`ahu mcp serve < tools-list.json | jq -r '.result.tools[].name'`),
+      key("ahu_agents_list"),
+      key("ahu_tasks_list"),
+      key("ahu_task_get"),
     ],
   },
   {
@@ -149,10 +180,32 @@ export const STEPS: Step[] = [
     heading: "Telemetry is off until you opt in.",
     note: "Opt in per project and traces go to a local OTLP collector only. Token counts are what the harness reports. ahu never estimates them.",
     lines: [
-      cmd("grep -A2 '^\\[telemetry\\]' docs/reference.md"),
+      cmd("cat .agents/ahu/config.toml"),
+      out("…"),
       out("[telemetry]"),
       out("enabled = true"),
       out('endpoint = "http://127.0.0.1:4318"'),
+    ],
+  },
+  {
+    id: "doctor",
+    label: "Doctor",
+    backdrop: { kind: "photo", src: "/media/broken-windows.webp" },
+    heading: "One command checks all of it.",
+    note: "ahu doctor checks harnesses, hooks, telemetry, hygiene cadence, bundled skills, drift, and cmux, and says which warnings stop a launch.",
+    lines: [
+      cmd("ahu doctor"),
+      out("harness      claude-code — executable ready"),
+      out("harness      codex — executable ready"),
+      out("harness      opencode — executable ready"),
+      out("telemetry    off (opt-in)"),
+      out("hygiene      architect@1.0.0: current"),
+      warn("hygiene      reviewer@1.1.0: due"),
+      out("skills       bundled skills verified"),
+      warn("drift        @builder"),
+      out("cmux         reachable"),
+      gap,
+      out("No blocking problems. 2 warnings affect behaviour but do not stop a launch."),
     ],
   },
   {
@@ -161,11 +214,13 @@ export const STEPS: Step[] = [
     backdrop: { kind: "photo", src: "/media/decay-corridor.webp" },
     heading: "Try it when one agent isn’t enough.",
     note: "You already use Claude Code, Codex, OpenCode, or Antigravity. You want several on one repo at once, and a record of which agent did what.",
+    wide: true,
     lines: [
       cmd("ahu tasks"),
-      out("TASK HANDLE             TITLE                        STATE     AGENT                  MODE     LIVE    RUNTIME                      WORKTREE"),
-      key("@task-name (ahu:…)     Example task                exited    dev-opus@1.0.1          cmux     unknown claude-code / claude-opus-5   .worktrees/<task-id>"),
-      out("Run `ahu task <handle>` for task details."),
+      out("TASK HANDLE        STATE     AGENT             MODE      RUNTIME                          WORKTREE"),
+      key("@fix-flaky-test    running   builder@1.2.0     cmux      codex / gpt-6-astra              .worktrees/[task-id-1]"),
+      key("@review-fix        running   reviewer@1.1.0    cmux      opencode / ollama/glm-5.3:cloud  .worktrees/[task-id-2]"),
+      out("@update-docs       exited    architect@1.0.0   headless  claude-code / claude-opus-5      .worktrees/[task-id-3]"),
     ],
   },
 ];

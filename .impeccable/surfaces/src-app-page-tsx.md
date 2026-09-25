@@ -7,11 +7,11 @@ related_targets: []
 
 # Surface: moai-agent.com landing (/)
 
-Mode: Persuade. Audience: developers already running coding agents. Action: go to github.com/moai-agent/ahu to try it and give feedback. Proof: real `ahu` output captured from the ahu repo (agents, launch dry-run, drift warning, inventory gaps, tasks). Constraints: one page, minimal text, no SaaS tone, no overclaiming, no emoji icons, pre-1.0.
+Mode: Persuade. Audience: developers already running coding agents. Action: go to github.com/moai-agent/ahu to try it and give feedback. Proof: illustrative, synthetic ahu sessions that follow the current CLI syntax (no real IDs, output, traces, or paths). Constraints: one page, minimal text, no SaaS tone, no overclaiming, no emoji icons, pre-1.0.
 
 ## Direction contract
 
-THESIS: The page is one real ahu session. Refuses the dev-tool default of hero + feature grid + code snippet; every claim is a line ahu actually prints.
+THESIS: The page walks through ahu one step at a time, each with an illustrative session. Refuses the dev-tool default of hero + feature grid + code snippet; every claim matches what ahu does.
 
 OWN-WORLD: Black ground, the particle moai as a fixed backdrop that dims as the session begins. Bone-white Atkinson Hyperlegible display, Lexend notes, Atkinson Hyperlegible Mono for terminal. One glitch-red accent for the prompt caret and warnings, glitch-blue for agent handles. No cards, no icons except an authored GitHub mark and arrow.
 

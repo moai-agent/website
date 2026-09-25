@@ -2,13 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Terminal } from "@xterm/xterm";
-import type { Line, Step } from "./transcript";
+import { AHU_VERSION, type Line, type Step } from "./transcript";
 
 /*
  * One xterm.js terminal per step, after or13.io's XtermTerminal. It types the
- * step's real, trimmed ahu output when it scrolls into view, then leaves a
- * prompt: the step's own command replays the recording, `help` explains, and
- * anything else points at installing ahu. The static transcript underneath is
+ * step's illustrative (synthetic) ahu session when it scrolls into view, then
+ * leaves a prompt: the step's own command replays the example, `help`
+ * explains, and anything else points at installing ahu. The static transcript underneath is
  * what renders without JavaScript and what screen readers read.
  */
 
@@ -112,11 +112,11 @@ export default function StepTerminal({ step }: { step: Step }) {
           term!.write("\r\n");
           if (cmd === "clear") term!.clear();
           else if (cmd === "help")
-            term!.write(`${COLOR.out}Recorded ahu v0.4.0 output. Try: ${COLOR.cmd}${command || "clear"}${RESET}\r\n`);
+            term!.write(`${COLOR.out}Illustrative ahu ${AHU_VERSION} session, not live output. Try: ${COLOR.cmd}${command || "clear"}${RESET}\r\n`);
           else if (cmd && command && (cmd === command || cmd === command.split(" ").slice(0, 2).join(" "))) {
             for (const line of step.lines.slice(step.lines.findIndex((l) => l.kind === "cmd") + 1)) print(line);
           } else if (cmd)
-            term!.write(`${COLOR.out}${cmd.split(" ")[0]}: not in this recording. Install ahu to run it for real.${RESET}\r\n`);
+            term!.write(`${COLOR.out}${cmd.split(" ")[0]}: not in this example. Install ahu to run it for real.${RESET}\r\n`);
           term!.write(PROMPT);
         } else if (data === "\x7f" || data === "\b") {
           if (input) {
@@ -161,7 +161,9 @@ export default function StepTerminal({ step }: { step: Step }) {
       const size = () => {
         const dims = fit.proposeDimensions();
         if (!dims || !term) return;
-        const cols = Math.max(20, dims.cols);
+        // Tables keep their rows whole: widen past the panel and scroll sideways.
+        const longest = Math.max(...step.lines.map((l) => (l.kind === "cmd" ? 2 : 0) + l.text.length));
+        const cols = step.wide ? Math.max(dims.cols, longest + 1) : Math.max(20, dims.cols);
         const rows =
           step.lines.reduce((n, l) => n + Math.max(1, Math.ceil(((l.kind === "cmd" ? 2 : 0) + l.text.length) / cols)), 0) + 3;
         term.resize(cols, rows);
@@ -215,16 +217,16 @@ export default function StepTerminal({ step }: { step: Step }) {
   return (
     <div className="term">
       <div className="term-bar">
-        <span>~/github.com/moai-agent/ahu</span>
-        <span>ahu v0.4.0 · real output, trimmed</span>
+        <span>example/app</span>
+        <span>illustrative · ahu {AHU_VERSION} syntax</span>
       </div>
       <div
         ref={hostRef}
-        className={`term-xterm ${live ? "is-live" : ""}`}
+        className={`term-xterm ${live ? "is-live" : ""} ${step.wide ? "is-wide" : ""}`}
         role="region"
         aria-label={`Replayable terminal: ${step.heading}`}
       />
-      <pre className={`term-static ${live ? "sr-only" : ""}`}>
+      <pre className={`term-static ${live ? "sr-only" : ""} ${step.wide ? "is-wide" : ""}`}>
         <TermLines lines={step.lines} />
       </pre>
     </div>
