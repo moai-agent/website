@@ -225,5 +225,5 @@ export const STEPS: Step[] = [
   },
 ];
 
-export const INSTALL = "cargo install --git https://github.com/moai-agent/ahu --locked";
+export const INSTALL = "cargo install --git https://github.com/moai-agent/ahu --tag v0.5.0 --locked";
 export const REPO_URL = "https://github.com/moai-agent/ahu";
