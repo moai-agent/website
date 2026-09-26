@@ -6,7 +6,16 @@
  * local paths into this file.
  */
 
-import { CONTEXT_COLS, CONTEXT_FRAMES, HARNESS_FRAMES, LOCK_FRAMES, WORKTREE_COLS, WORKTREE_FRAMES } from "./harnessFrames";
+import {
+  CONTEXT_COLS,
+  CONTEXT_FRAMES,
+  EVALS_COLS,
+  EVALS_FRAMES,
+  HARNESS_FRAMES,
+  LOCK_FRAMES,
+  WORKTREE_COLS,
+  WORKTREE_FRAMES,
+} from "./harnessFrames";
 
 /** The ahu release whose command syntax these examples follow. */
 export const AHU_VERSION = "v0.5.0";
@@ -248,32 +257,23 @@ export const STEPS: Step[] = [
     ],
   },
   {
-    id: "telemetry",
-    label: "Telemetry",
+    id: "evals",
+    label: "Evals",
     backdrop: { kind: "video", name: "landfill" },
-    heading: "Telemetry is off until you opt in.",
-    note: "Opt in per project and traces go to a local OTLP collector only. Token counts are what the harness reports. ahu never estimates them.",
+    heading: "Pick agents on evidence.",
+    note: "ahu eval shows which agent gets your work right, whether it reaches for the right MCP tools, and what it costs in tokens and time, all traced with local OpenTelemetry.",
+    // ahu eval report in the cmux terminal, as captured (see harnessFrames.ts).
+    tab: "~/example/app",
+    frames: EVALS_FRAMES,
+    cols: EVALS_COLS,
     lines: [
-      cmd("cat .agents/ahu/config.toml"),
-      out("…"),
-      out("[telemetry]"),
-      out("enabled = true"),
-      out('endpoint = "http://127.0.0.1:4318"'),
-    ],
-  },
-  {
-    id: "when",
-    label: "When",
-    backdrop: { kind: "photo", src: "/media/decay-corridor.webp" },
-    heading: "Try it when one agent isn’t enough.",
-    note: "You already use Claude Code, Codex, OpenCode, or Antigravity. You want several on one repo at once, and a record of which agent did what.",
-    wide: true,
-    lines: [
-      cmd("ahu tasks"),
-      out("TASK HANDLE             TITLE                        STATE     AGENT                  MODE     LIVE    RUNTIME                         WORKTREE"),
-      key("@fix-flaky-test         Fix the flaky cleanup test   running   builder@1.2.0          cmux     live    codex / gpt-6-astra             .worktrees/[task-id-1]"),
-      key("@review-fix             Review the cleanup fix       running   reviewer@1.1.0         cmux     live    opencode / ollama/glm-5.3:cloud .worktrees/[task-id-2]"),
-      out("@update-docs            Update the docs              exited    architect@1.0.0        headless stale   claude-code / claude-opus-5     .worktrees/[task-id-3]"),
+      cmd("ahu eval report --records ~/evals/runs.jsonl"),
+      out("eval report  10 record(s) from ~/evals/runs.jsonl"),
+      out("             2 comparable configuration(s)"),
+      gap,
+      out("CASE                AGENT           RUNTIME                          ANSWER  TOOLS  TIME   TOKENS"),
+      key("ticket-routing-001  builder@1.2.0   codex / gpt-6-astra              4/5     5/5    43.5s  19.4k"),
+      key("ticket-routing-001  reviewer@1.1.0  opencode / ollama/glm-5.3:cloud  3/5     3/5    1.0m   21.5k"),
     ],
   },
 ];

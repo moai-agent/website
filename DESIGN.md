@@ -188,7 +188,7 @@ Every effect earns its place against legibility (from or13.io's anti-reference "
 
 - **How to measure.** With the text hidden, capture the area behind the text block and take the 99th-percentile luminance of the background. Body text must clear 4.5:1 against that value; large text (24px+ bold) must clear 3:1. A pass on an average pixel is not a pass.
 - **Hero.** A blurred radial scrim behind the text (94% black at the centre, fading out by 80%) keeps the line at 7.9:1 on desktop and 5.3:1 on phones, even over the brightest particles.
-- **Session.** Each step's artwork sits under the vignette plus a flat 50% black shade, and the terminal panel is opaque. Measured notes (ash body text, p99 background): lock 5.7:1, worktree 5.9:1, telemetry 5.4:1, identity 6.8:1. Every step clears 4.5:1 on desktop and phone.
+- **Session.** Each step's artwork sits under the vignette plus a flat 50% black shade, and the terminal panel is opaque. Measured notes (ash body text, p99 background): lock 5.7:1, worktree 5.9:1, evals 5.4:1, identity 6.8:1. Every step clears 4.5:1 on desktop and phone.
 - **Network.** No background. Canvas labels still carry a 4px black halo.
 - **Close.** No media, so there is nothing to measure against.
 - Any new artwork has to be measured this way before it ships.
@@ -322,15 +322,14 @@ Every section carries at most one background image or major artwork, and no asse
 | A lockfile for your agents `#lock` | Cracked glass, screened at 35% |
 | Every task is a branch you can review `#worktree` | *Dark Water* (or13.io `polluted-canal`) video |
 | Context you can audit `#context` | *Gutted* (or13.io `gutted-tv`) photo |
-| Telemetry is off until you opt in `#telemetry` | *Landfill* (or13.io `landfill`) video |
-| Try it when one agent isn't enough `#when` | *Last Exit* (or13.io `decay-corridor`) photo |
+| Pick agents on evidence `#evals` | *Landfill* (or13.io `landfill`) video |
 | Network map `#network` | none. The visual stands on its own |
 | Install `#install` | none |
 
 Videos are 1280px, 20–27s forward-then-reverse loops (WebM + MP4 + poster), and photos are 1600px WebP. Both are graded with or13.io's recipe (saturate 0.4, brightness 0.42, contrast 1.2) under the vignette and a flat 50% black shade. They load nothing until their section is on screen. Reduced-motion visitors get the poster. Never add scan lines, flicker, or a second texture to a section that already has its artwork.
 
 ### Fragments (rule)
-Every section has a stable `id` and is directly linkable (`moai-agent.com/#telemetry`). As you scroll, the address bar follows the section in view (`history.replaceState`, so the back button is untouched; the hero clears the hash). Step headings show a dim `#` anchor on hover and focus (always faintly on touch). The section dots are generated from the same list.
+Every section has a stable `id` and is directly linkable (`moai-agent.com/#evals`). As you scroll, the address bar follows the section in view (`history.replaceState`, so the back button is untouched; the hero clears the hash). Step headings show a dim `#` anchor on hover and focus (always faintly on touch). The section dots are generated from the same list.
 
 ### Glitch Wordmark (signature)
 The `ahu` display mark with two pseudo-element copies (red-shifted and blue-shifted, 70% opacity) that tear through horizontal clip bands on a 4s intermittent cycle. Used once, on the hero mark; off under reduced motion.
