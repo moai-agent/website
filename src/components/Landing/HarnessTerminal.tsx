@@ -82,7 +82,13 @@ export default function HarnessTerminal({ step, variants }: { step: Step; varian
       </div>
       <div id={`${step.id}-panel`} role="tabpanel" aria-labelledby={`${stepId(active)}-tab`}>
         {active.frames ? (
-          <FrameTerminal key={active.id} frames={active.frames} label={step.heading} screen={active.screen} />
+          <FrameTerminal
+            key={active.id}
+            frames={active.frames}
+            label={step.heading}
+            screen={active.screen}
+            cols={active.cols}
+          />
         ) : (
           <StepTerminal key={active.id} step={step} lines={active.lines} prompt={active.prompt} native />
         )}

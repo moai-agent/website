@@ -320,7 +320,7 @@ Every section carries at most one background image or major artwork, and no asse
 | Named agents you can trust `#identity` | *After Hours* (or13.io `empty-lot`) video |
 | One harness can call another `#invocation` | *Terminus* (or13.io `overgrown-tracks`) photo |
 | A lockfile for your agents `#lock` | Cracked glass, screened at 35% |
-| Every task gets its own worktree `#worktree` | *Dark Water* (or13.io `polluted-canal`) video |
+| Every task is a branch you can review `#worktree` | *Dark Water* (or13.io `polluted-canal`) video |
 | It says what it can't see `#horizon` | *Subterranean* (or13.io `underground`) video |
 | Skills are context `#skills` | *Gutted* (or13.io `gutted-tv`) photo |
 | Your coordinator can ask ahu over MCP `#mcp` | *Container Port* (or13.io `container-port`) video |

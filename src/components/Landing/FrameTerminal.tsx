@@ -174,11 +174,14 @@ export default function FrameTerminal({
   frames,
   label,
   screen,
+  cols = FRAME_COLS,
 }: {
   frames: string[][];
   label: string;
   /** The harness's own screen colour, when it paints one over the terminal's. */
   screen?: string;
+  /** Columns these frames were captured at, when not the default. */
+  cols?: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [shown, setShown] = useState(0);
@@ -216,7 +219,7 @@ export default function FrameTerminal({
       aria-label={`Illustrative terminal: ${label}`}
       style={screen ? { background: screen } : undefined}
     >
-      <div className="frame-screen" style={{ "--cols": FRAME_COLS, "--rows": rows } as CSSProperties}>
+      <div className="frame-screen" style={{ "--cols": cols, "--rows": rows } as CSSProperties}>
         {frames[shown].map((ansi, i) => (
           <Row key={i} ansi={ansi} />
         ))}

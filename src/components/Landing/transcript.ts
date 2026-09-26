@@ -6,7 +6,7 @@
  * local paths into this file.
  */
 
-import { HARNESS_FRAMES, LOCK_FRAMES } from "./harnessFrames";
+import { HARNESS_FRAMES, LOCK_FRAMES, WORKTREE_COLS, WORKTREE_FRAMES } from "./harnessFrames";
 
 /** The ahu release whose command syntax these examples follow. */
 export const AHU_VERSION = "v0.5.0";
@@ -54,6 +54,8 @@ export interface Variant {
   frames?: string[][];
   /** The harness's own screen colour, when it paints one (OpenCode does). */
   screen?: string;
+  /** Columns the frames were captured at, when not the default 88. */
+  cols?: number;
 }
 
 export interface Step {
@@ -73,6 +75,8 @@ export interface Step {
   frames?: string[][];
   /** The cmux tab title for `frames`. */
   tab?: string;
+  /** Columns `frames` were captured at, when not the default 88. */
+  cols?: number;
 }
 
 const cmd = (text: string): Line => ({ kind: "cmd", text });
@@ -206,18 +210,18 @@ export const STEPS: Step[] = [
     id: "worktree",
     label: "Worktrees",
     backdrop: { kind: "video", name: "dark-water" },
-    heading: "Every task gets its own worktree.",
-    note: "A fresh branch from HEAD, with your agent config carried in. Your working files stay put. Run it in cmux or headless. The older ahu launch @agent form still works.",
+    heading: "Every task is a branch you can review.",
+    note: "A fresh worktree per task, so each agent's work lands as a branch you diff, merge, or throw away.",
+    // ahu tasks in the cmux terminal, as captured (see harnessFrames.ts).
+    tab: "~/example/app",
+    frames: WORKTREE_FRAMES,
+    cols: WORKTREE_COLS,
     lines: [
-      cmd("ahu @builder 'Fix the flaky cleanup test.' --dry-run"),
-      out("About to submit"),
-      out("  agent      builder@1.2.0"),
-      out("  harness    codex"),
-      out("  model      gpt-6-astra"),
-      out("  because    named agent @builder 1.2.0 pins this harness and model"),
-      key(`  branch     ahu/builder/${TASK}`),
-      key(`  worktree   .worktrees/${TASK}`),
-      out(`  base       ${BASE}`),
+      cmd("ahu tasks"),
+      out("HANDLE           STATE    AGENT             RUNTIME                            BRANCH"),
+      key("@review-fix      running  reviewer@1.1.0    opencode / ollama/glm-5.3:cloud    ahu/reviewer/[task-3]"),
+      key("@flaky-survey    running  researcher@1.0.0  antigravity / gemini-3.1-pro-high  ahu/researcher/[task-2]"),
+      key("@fix-flaky-test  running  builder@1.2.0     codex / gpt-6-astra                ahu/builder/[task-1]"),
     ],
   },
   {

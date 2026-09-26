@@ -27,7 +27,7 @@ An ahu agent is a named, reviewable identity (name, harness, exact model, instru
 
 ## Capabilities and Constraints
 
-- Commands: `ahu`, `ahu @agent [prompt]`, `ahu doctor`, `ahu agents`, `ahu launch @agent` (backward-compatible), `ahu tasks`, `ahu task`, `ahu diff`, `ahu result`, `ahu focus`, `ahu cancel`, `ahu inventory`, `ahu hygiene`, `ahu explain`, `ahu mcp serve`.
+- Commands: `ahu`, `ahu @agent [prompt]`, `ahu doctor`, `ahu agents`, `ahu launch @agent` (backward-compatible), `ahu tasks`, `ahu task`, `ahu result`, `ahu focus`, `ahu cancel`, `ahu inventory`, `ahu hygiene`, `ahu explain`, `ahu mcp serve`.
 - Prompt delivery in nonce-bearing sections (contract, state, instructions, task); prompt text, not an enforced system prompt.
 - Headless child dispatch requires explicit host grants.
 - ahu holds no provider credentials and installs no harnesses.

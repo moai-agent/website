@@ -41,7 +41,9 @@ export default function Steps() {
             <HarnessTerminal
               step={step}
               variants={
-                step.variants ?? [{ id: step.id, label: step.tab ?? step.label, prompt: "$ ", lines: step.lines, frames: step.frames }]
+                step.variants ?? [
+                  { id: step.id, label: step.tab ?? step.label, prompt: "$ ", lines: step.lines, frames: step.frames, cols: step.cols },
+                ]
               }
             />
           ) : (
