@@ -217,10 +217,10 @@ export const STEPS: Step[] = [
     wide: true,
     lines: [
       cmd("ahu tasks"),
-      out("TASK HANDLE        STATE     AGENT             MODE      RUNTIME                          WORKTREE"),
-      key("@fix-flaky-test    running   builder@1.2.0     cmux      codex / gpt-6-astra              .worktrees/[task-id-1]"),
-      key("@review-fix        running   reviewer@1.1.0    cmux      opencode / ollama/glm-5.3:cloud  .worktrees/[task-id-2]"),
-      out("@update-docs       exited    architect@1.0.0   headless  claude-code / claude-opus-5      .worktrees/[task-id-3]"),
+      out("TASK HANDLE             TITLE                        STATE     AGENT                  MODE     LIVE    RUNTIME                         WORKTREE"),
+      key("@fix-flaky-test         Fix the flaky cleanup test   running   builder@1.2.0          cmux     live    codex / gpt-6-astra             .worktrees/[task-id-1]"),
+      key("@review-fix             Review the cleanup fix       running   reviewer@1.1.0         cmux     live    opencode / ollama/glm-5.3:cloud .worktrees/[task-id-2]"),
+      out("@update-docs            Update the docs              exited    architect@1.0.0        headless stale   claude-code / claude-opus-5     .worktrees/[task-id-3]"),
     ],
   },
 ];

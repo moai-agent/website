@@ -31,7 +31,7 @@ An ahu agent is a named, reviewable identity (name, harness, exact model, instru
 - Prompt delivery in nonce-bearing sections (contract, state, instructions, task); prompt text, not an enforced system prompt.
 - Headless child dispatch requires explicit host grants.
 - ahu holds no provider credentials and installs no harnesses.
-- Public at https://github.com/moai-agent/ahu, pre-1.0 (latest published: v0.4.0 pre-release; v0.5.0 prepared locally). Install: `cargo install --git https://github.com/moai-agent/ahu --locked`. Call it early; make no stability claims.
+- Public at https://github.com/moai-agent/ahu, pre-1.0 (latest release: v0.5.0, published 2026-09-25). Install: `cargo install --git https://github.com/moai-agent/ahu --tag v0.5.0 --locked`. Call it early; make no stability claims.
 - The site's job is to send developers to the GitHub repo to try ahu and give feedback.
 - One page for as long as possible. Static export (Next.js `output: "export"`) on GitHub Pages; no backend.
 
