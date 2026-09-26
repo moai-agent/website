@@ -225,23 +225,6 @@ export const STEPS: Step[] = [
     ],
   },
   {
-    id: "horizon",
-    label: "Inventory",
-    backdrop: { kind: "video", name: "underground" },
-    heading: "It says what it can’t see.",
-    note: "ahu lists the instructions, hooks, and settings it can find. Then it lists what it can’t.",
-    lines: [
-      cmd("ahu inventory @architect"),
-      out("…"),
-      out("What ahu cannot see"),
-      out("  - claude-code does not report to ahu which of the available sources it actually loaded into the model's context"),
-      out("  - retrieval, compaction summaries, and conversation transformations inside a running session are not observable from outside it"),
-      out("  - ahu cannot disable in-session model switching or provider-side routing"),
-      gap,
-      warn("This inventory is not complete. `available` means a source is discoverable by the harness, not that its contents reached the model."),
-    ],
-  },
-  {
     id: "skills",
     label: "Skills",
     backdrop: { kind: "photo", src: "/media/gutted-tv.webp" },
