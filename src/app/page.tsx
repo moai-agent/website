@@ -1,5 +1,6 @@
 import CopyInstall from "@/components/Landing/CopyInstall";
 import HeroMoai from "@/components/Landing/HeroMoai";
+import HeroTagline from "@/components/Landing/HeroTagline";
 import SectionDots from "@/components/Landing/SectionDots";
 import Network from "@/components/Landing/Network";
 import Steps from "@/components/Landing/Steps";
@@ -56,7 +57,7 @@ export default async function Home() {
             <h1 className="hero-mark glitch-container glitch-rgb" data-text="ahu">
               ahu
             </h1>
-            <p className="hero-line">Cross harness orchestration for harness and model pinned agents.</p>
+            <HeroTagline />
           </div>
           <a href="#session" className="hero-cue">
             Watch a session

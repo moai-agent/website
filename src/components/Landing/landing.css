@@ -197,6 +197,45 @@ html:has(.landing) {
   text-wrap: balance;
 }
 
+/*
+ * The decrypting harness names: their own centered line, so name length never
+ * reflows the sentence. The longest run ("Antigravity + OpenCode + Claude Code",
+ * 36 mono chars at ~0.65em each) is ~23.5em; below that the type shrinks to
+ * fit rather than wrap.
+ */
+.hero-harnesses {
+  display: block;
+  margin-top: 12px;
+  white-space: nowrap;
+  font-size: min(1em, calc((100vw - 72px) / 23.5));
+}
+
+/* DecryptText, ported from or13.io with its colors mapped to this palette. */
+.decrypt-text {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  letter-spacing: 0.05em;
+}
+
+.decrypt-idle {
+  visibility: hidden;
+}
+
+.decrypt-scramble {
+  color: var(--dim);
+  text-shadow: 0 0 4px oklch(0.45 0.017 213.2 / 0.4);
+  transition: color 0.05s;
+}
+
+.decrypt-resolved,
+.decrypt-text {
+  color: #ffffff;
+  text-shadow:
+    0 0 4px oklch(0.987 0.002 197.1 / 0.4),
+    0 0 10px oklch(0.987 0.002 197.1 / 0.15),
+    0 1px 18px rgb(0 0 0 / 0.95);
+  transition: color 0.15s, text-shadow 0.3s;
+}
+
 .hero-cue {
   position: absolute;
   bottom: max(28px, env(safe-area-inset-bottom));
