@@ -321,8 +321,7 @@ Every section carries at most one background image or major artwork, and no asse
 | One harness can call another `#invocation` | *Terminus* (or13.io `overgrown-tracks`) photo |
 | A lockfile for your agents `#lock` | Cracked glass, screened at 35% |
 | Every task is a branch you can review `#worktree` | *Dark Water* (or13.io `polluted-canal`) video |
-| Skills are context `#skills` | *Gutted* (or13.io `gutted-tv`) photo |
-| Your coordinator can ask ahu over MCP `#mcp` | *Container Port* (or13.io `container-port`) video |
+| Context you can audit `#context` | *Gutted* (or13.io `gutted-tv`) photo |
 | Telemetry is off until you opt in `#telemetry` | *Landfill* (or13.io `landfill`) video |
 | Try it when one agent isn't enough `#when` | *Last Exit* (or13.io `decay-corridor`) photo |
 | Network map `#network` | none. The visual stands on its own |

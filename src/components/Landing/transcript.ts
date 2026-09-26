@@ -6,7 +6,7 @@
  * local paths into this file.
  */
 
-import { HARNESS_FRAMES, LOCK_FRAMES, WORKTREE_COLS, WORKTREE_FRAMES } from "./harnessFrames";
+import { CONTEXT_COLS, CONTEXT_FRAMES, HARNESS_FRAMES, LOCK_FRAMES, WORKTREE_COLS, WORKTREE_FRAMES } from "./harnessFrames";
 
 /** The ahu release whose command syntax these examples follow. */
 export const AHU_VERSION = "v0.5.0";
@@ -225,38 +225,26 @@ export const STEPS: Step[] = [
     ],
   },
   {
-    id: "skills",
-    label: "Skills",
+    id: "context",
+    label: "Context",
     backdrop: { kind: "photo", src: "/media/gutted-tv.webp" },
-    heading: "Skills are context. ahu keeps them in view.",
-    note: "Every skill an agent can load is listed with where it lives and who controls it. ahu proposes cleanup on a project cadence and never deletes anything itself.",
+    heading: "Context you can audit.",
+    note: "Each agent's instructions are a file in your repo. ahu writes its skills there too, for you to review and commit.",
+    // ahu agents and ahu mcp setup in the cmux terminal (see harnessFrames.ts).
+    tab: "~/example/app",
+    frames: CONTEXT_FRAMES,
+    cols: CONTEXT_COLS,
     lines: [
-      cmd("ahu hygiene @architect"),
-      out("Context hygiene review for architect@1.0.0 (requested)"),
-      out("Project cadence: every 7 day(s), set by context_hygiene.review_interval_days in .agents/ahu/config.toml."),
+      cmd("ahu agents"),
+      out("AGENT              HARNESS      MODEL                 STATUS"),
+      key("@builder 1.2.0     codex        gpt-6-astra           .agents/ahu/agents/builder.md"),
+      key("@researcher 1.0.0  antigravity  gemini-3.1-pro-high   .agents/ahu/agents/researcher.md"),
+      key("@reviewer 1.1.0    opencode     ollama/glm-5.3:cloud  .agents/ahu/agents/reviewer.md"),
       gap,
-      out("Sources that may influence this agent:"),
-      out("  - .agents/skills/code-review/SKILL.md [skill, repository, shared]"),
-      out("      at .agents/skills/code-review/SKILL.md"),
-      out("      control: repository-edit"),
-      out("  - plugins [skill, user, shared]"),
-      out("      control: harness-setting"),
-      gap,
-      warn("Nothing has been changed. ahu does not purge memory, prune skills, disable imported capabilities, or stage or commit anything on your behalf."),
-    ],
-  },
-  {
-    id: "mcp",
-    label: "MCP",
-    backdrop: { kind: "video", name: "container-port" },
-    heading: "Your coordinator can ask ahu over MCP.",
-    note: "ahu mcp serve answers read-only questions about this repo's agents and tasks over stdio. It inspects. It never launches, merges, or approves work.",
-    lines: [
-      out("# tools-list.jsonl: initialize, notifications/initialized, then tools/list (id 1)"),
-      cmd(`ahu mcp serve < tools-list.jsonl | jq -r 'select(.id == 1) | .result.tools[].name'`),
-      key("ahu_agents_list"),
-      key("ahu_tasks_list"),
-      key("ahu_task_get"),
+      cmd("ahu mcp setup"),
+      out("Wrote ~/example/app/.agents/skills/discover-requirements/SKILL.md"),
+      out("Wrote ~/example/app/.agents/skills/direct-agents/SKILL.md"),
+      out("Wrote ~/example/app/.agents/skills/context-hygiene/SKILL.md"),
     ],
   },
   {

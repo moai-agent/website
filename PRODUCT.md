@@ -12,7 +12,7 @@ Developers who already run coding agents (Claude Code, Codex, OpenCode, Antigrav
 
 ## Product Purpose
 
-moai-agent.com is the public home of `ahu`, a Rust CLI that launches repository-defined coding agents in fresh Git worktrees, interactively in cmux or unattended in headless mode. The site explains why ahu exists, how it works, and when it is worth trying. Success: a visiting developer understands the mechanism (repo-pinned agent identity + isolated worktree per task + honest context inventory), gets curious, and goes to the GitHub repo to try it and give feedback.
+moai-agent.com is the public home of `ahu`, a Rust CLI that launches repository-defined coding agents in fresh Git worktrees, interactively in cmux or unattended in headless mode. The site explains why ahu exists, how it works, and when it is worth trying. Success: a visiting developer understands the mechanism (repo-pinned agent identity + isolated worktree per task + context kept in the repository), gets curious, and goes to the GitHub repo to try it and give feedback.
 
 ## Positioning
 
@@ -27,7 +27,7 @@ An ahu agent is a named, reviewable identity (name, harness, exact model, instru
 
 ## Capabilities and Constraints
 
-- Commands: `ahu`, `ahu @agent [prompt]`, `ahu doctor`, `ahu agents`, `ahu launch @agent` (backward-compatible), `ahu tasks`, `ahu task`, `ahu result`, `ahu focus`, `ahu cancel`, `ahu inventory`, `ahu hygiene`, `ahu explain`, `ahu mcp serve`.
+- Commands: `ahu`, `ahu @agent [prompt]`, `ahu doctor`, `ahu agents`, `ahu launch @agent` (backward-compatible), `ahu tasks`, `ahu task`, `ahu result`, `ahu focus`, `ahu cancel`, `ahu explain`, `ahu mcp serve`.
 - Prompt delivery in nonce-bearing sections (contract, state, instructions, task); prompt text, not an enforced system prompt.
 - Headless child dispatch requires explicit host grants.
 - ahu holds no provider credentials and installs no harnesses.
@@ -49,7 +49,7 @@ TLDR: ahu launches named coding agents, each pinned to its harness and model, in
 
 - **Identity in the repo.** An agent is a reviewed file, not a setting on someone's laptop.
 - **A worktree per task.** Parallel agents never share a working copy.
-- **An honest inventory.** ahu shows what can reach an agent's context, and what it cannot see.
+- **Context in the repository.** Each agent's instructions are a file in the repo, and ahu writes its skills there for review.
 
 ### How does ahu do it?
 
