@@ -6,6 +6,8 @@
  * local paths into this file.
  */
 
+import { HARNESS_FRAMES } from "./harnessFrames";
+
 /** The ahu release whose command syntax these examples follow. */
 export const AHU_VERSION = "v0.5.0";
 
@@ -13,7 +15,13 @@ export const AHU_VERSION = "v0.5.0";
 const TASK = "[task-id]";
 const BASE = "[base-commit]";
 
-export type LineKind = "cmd" | "out" | "key" | "warn" | "gap";
+/** The headless hand-off every harness variant shows, in ahu v0.5.0's shape. */
+const LAUNCH = "ahu @researcher --headless --background --prompt-file research.txt";
+const HEADLESS = `Headless @researcher on antigravity / gemini-3.1-pro-high; output .ahu/state/tasks/${TASK}`;
+const HANDOFF = `Task @flaky-survey (ahu:task:${TASK})`;
+const REPLY = "@researcher is running headless on Antigravity (gemini-3.1-pro-high) as @flaky-survey.";
+
+export type LineKind = "cmd" | "out" | "key" | "warn" | "dim" | "gap";
 
 export interface Line {
   kind: LineKind;
@@ -30,6 +38,24 @@ export type Backdrop =
   | { kind: "overlay"; src: string }
   | null;
 
+/**
+ * The same moment as rendered by one coordinating harness. The frame (glyphs,
+ * gutters, collapse markers) follows that harness's own TUI; the text inside it
+ * is synthetic ahu output.
+ */
+export interface Variant {
+  id: string;
+  /** Tab label: the harness's product name. */
+  label: string;
+  /** What precedes the user's message, e.g. Claude Code's `❯ `. */
+  prompt: string;
+  lines: Line[];
+  /** Captured screens with the harness's own colours; played instead of `lines`. */
+  frames?: string[][];
+  /** The harness's own screen colour, when it paints one (OpenCode does). */
+  screen?: string;
+}
+
 export interface Step {
   /** Also the step's URL fragment, e.g. moai-agent.com/#drift. */
   id: string;
@@ -41,54 +67,113 @@ export interface Step {
   lines: Line[];
   /** Tables: keep rows unwrapped and let the terminal scroll sideways. */
   wide?: boolean;
+  /** One rendering per harness; the viewer picks the one they recognize. */
+  variants?: Variant[];
 }
 
 const cmd = (text: string): Line => ({ kind: "cmd", text });
 const out = (text: string): Line => ({ kind: "out", text });
 const key = (text: string): Line => ({ kind: "key", text });
 const warn = (text: string): Line => ({ kind: "warn", text });
+const dim = (text: string): Line => ({ kind: "dim", text });
 const gap: Line = { kind: "gap", text: "" };
 
 export const STEPS: Step[] = [
   {
-    id: "names",
-    label: "Names",
+    id: "identity",
+    label: "Identity",
     backdrop: { kind: "video", name: "after-hours" },
-    heading: "A name should mean something.",
-    note: "Each agent is a file in your repo that pins its harness, model, and instructions. ahu agents flags any whose inputs have drifted.",
+    heading: "Named agents you can trust.",
+    note: "A different model is a different data processor. A different harness has different permissions. ahu won’t let either hide behind a familiar name.",
     wide: true,
     lines: [
       cmd("ahu agents"),
-      out("AGENT                    HARNESS       MODEL                  STATUS"),
-      key("@architect 1.0.0         claude-code   claude-opus-5          .agents/ahu/agents/architect.md"),
-      warn("@builder 1.2.0 [drifted] codex         gpt-6-astra            .agents/ahu/agents/builder.md"),
-      key("@researcher 1.0.0        antigravity   gemini-3.1-pro-high    .agents/ahu/agents/researcher.md"),
-      key("@reviewer 1.1.0          opencode      ollama/glm-5.3:cloud   .agents/ahu/agents/reviewer.md"),
+      out("AGENT                    HARNESS       MODEL           STATUS"),
+      key("@architect 1.0.0         claude-code   claude-opus-5   .agents/ahu/agents/architect.md"),
+      warn("@builder 1.2.0 [drifted] codex         gpt-6-astra     .agents/ahu/agents/builder.md"),
     ],
   },
   {
-    id: "start",
-    label: "Start",
+    id: "invocation",
+    label: "Invocation",
     backdrop: { kind: "photo", src: "/media/overgrown-tracks.webp" },
-    heading: "Name an agent to start.",
-    note: "ahu @agent opens the launcher with that agent already picked. Add a prompt to go straight to the preview. Pasting never submits.",
-    lines: [
-      cmd("ahu @reviewer"),
-      key("Preselected agent: @reviewer"),
-      gap,
-      out("Resolved for this task:"),
-      out("  agent   reviewer@1.1.0"),
-      out("  harness opencode"),
-      out("  model   ollama/glm-5.3:cloud"),
-      out("  because named agent @reviewer 1.1.0 pins this harness and model"),
-      gap,
-      out("Task prompt. Paste or type as many lines as you like."),
-      out("Pasting does not submit. A separate confirmation follows the preview."),
-      out("  Finish: type `.` alone on a line, or end input."),
-      out("  Cancel: type `.cancel` alone on a line to abandon it."),
-      gap,
-      out(".cancel"),
-      out("Cancelled. Nothing was created."),
+    heading: "One harness can call another.",
+    note: "Codex asks for @researcher. ahu starts it on Antigravity, headless, with the model it pinned. No harness picks for you.",
+    lines: [],
+    variants: [
+      {
+        id: "claude-code",
+        label: "Claude Code",
+        prompt: "❯ ",
+        frames: HARNESS_FRAMES["claude-code"],
+        lines: [
+          cmd("Hand the flaky-test survey to @researcher."),
+          gap,
+          key(`⏺ Bash(${LAUNCH})`),
+          out(`  ⎿  ${HEADLESS}`),
+          out(`     ${HANDOFF}`),
+          dim("     … +14 lines (ctrl+o to expand)"),
+          gap,
+          out(`⏺ ${REPLY}`),
+        ],
+      },
+      {
+        id: "codex",
+        label: "Codex",
+        frames: HARNESS_FRAMES.codex,
+        prompt: "› ",
+        lines: [
+          cmd("Hand the flaky-test survey to @researcher."),
+          gap,
+          key(`• Ran ${LAUNCH}`),
+          out(`  └ ${HEADLESS}`),
+          out(`    ${HANDOFF}`),
+          dim("    … +14 lines"),
+          gap,
+          dim("─ Worked for 6s ─────────────────────────"),
+          gap,
+          out(`• ${REPLY}`),
+        ],
+      },
+      {
+        // Antigravity hands off to an OpenCode agent, so this tab also crosses harnesses.
+        id: "antigravity",
+        label: "Antigravity",
+        prompt: "> ",
+        frames: HARNESS_FRAMES.antigravity,
+        lines: [
+          cmd("Hand the cleanup review to @reviewer."),
+          dim("▸ Thought for 4s, 420 tokens"),
+          key("● Bash(ahu launch @reviewer --headless --background --output json --prompt-file review.txt)"),
+          dim("  ⎿  <output +9 lines>"),
+          out('            "identity": {'),
+          out('              "agent": "@reviewer",'),
+          out('              "harness": "opencode",'),
+          out('              "model": "ollama/glm-5.3:cloud"'),
+          out("            },"),
+          out('            "acceptance": "not assessed"'),
+          out("          } (ctrl+o to collapse)"),
+          out("  @reviewer is running headless on OpenCode as @review-fix."),
+        ],
+      },
+      {
+        id: "opencode",
+        label: "OpenCode",
+        frames: HARNESS_FRAMES.opencode,
+        screen: "#0a0a0a",
+        prompt: "┃  ",
+        lines: [
+          cmd("Hand the flaky-test survey to @researcher."),
+          gap,
+          key(`┃  $ ${LAUNCH}`),
+          out(`┃  ${HEADLESS}`),
+          out(`┃  ${HANDOFF}`),
+          dim("┃  …"),
+          gap,
+          out(`   ${REPLY}`),
+          dim("   ▣  Build · Big Pickle · 8.6s"),
+        ],
+      },
     ],
   },
   {
@@ -103,11 +188,8 @@ export const STEPS: Step[] = [
       warn(`Drift since the last builder@1.2.0 launch (task ${TASK}, [launched-at])`),
       warn("  - the repository agent configuration changed: [old-digest] -> [new-digest]"),
       gap,
-      out("The version label has not changed, but the effective inputs have. Any of these"),
-      out("can make the agent behave differently from earlier runs under the same name."),
-      out("Treat this as a pending behavior bundle: bump the agent's version and record what"),
-      out("changed. ahu does not do that for you, and it does not claim this change is a"),
-      out("harmless patch."),
+      out("The version label has not changed, but the effective inputs have. Any of these can make the agent behave differently from earlier runs under the same name."),
+      out("Treat this as a pending behavior bundle: bump the agent's version and record what changed. ahu does not do that for you, and it does not claim this change is a harmless patch."),
     ],
   },
   {
@@ -142,8 +224,7 @@ export const STEPS: Step[] = [
       out("  - retrieval, compaction summaries, and conversation transformations inside a running session are not observable from outside it"),
       out("  - ahu cannot disable in-session model switching or provider-side routing"),
       gap,
-      warn("This inventory is not complete. `available` means a source is discoverable by the"),
-      warn("harness, not that its contents reached the model."),
+      warn("This inventory is not complete. `available` means a source is discoverable by the harness, not that its contents reached the model."),
     ],
   },
   {
@@ -164,8 +245,7 @@ export const STEPS: Step[] = [
       out("  - plugins [skill, user, shared]"),
       out("      control: harness-setting"),
       gap,
-      warn("Nothing has been changed. ahu does not purge memory, prune skills, disable"),
-      warn("imported capabilities, or stage or commit anything on your behalf."),
+      warn("Nothing has been changed. ahu does not purge memory, prune skills, disable imported capabilities, or stage or commit anything on your behalf."),
     ],
   },
   {

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Atkinson_Hyperlegible_Mono, Lexend } from "next/font/google";
+import { Atkinson_Hyperlegible_Mono, JetBrains_Mono, Lexend } from "next/font/google";
 import "./globals.css";
 
 // Atkinson Hyperlegible Mono carries headings, controls, and terminal output;
@@ -13,6 +13,14 @@ const mono = Atkinson_Hyperlegible_Mono({
 const sans = Lexend({
   subsets: ["latin"],
   variable: "--font-sans",
+  display: "swap",
+});
+
+// JetBrains Mono is Ghostty's (and so cmux's) default terminal font: captured
+// harness frames render in it so they look like the terminal they came from.
+const term = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-term",
   display: "swap",
 });
 
@@ -71,7 +79,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${mono.variable} ${sans.variable}`}>
+    <html lang="en" className={`${mono.variable} ${sans.variable} ${term.variable}`}>
       <body>{children}</body>
     </html>
   );

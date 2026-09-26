@@ -87,6 +87,7 @@ export default async function Home() {
 
       <footer className="footer">
         <span>moai-agent</span>
+        <span>Terminal sessions are illustrative.</span>
         <a href={REPO_URL}>GitHub</a>
       </footer>
     </div>

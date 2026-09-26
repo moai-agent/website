@@ -188,7 +188,7 @@ Every effect earns its place against legibility (from or13.io's anti-reference "
 
 - **How to measure.** With the text hidden, capture the area behind the text block and take the 99th-percentile luminance of the background. Body text must clear 4.5:1 against that value; large text (24px+ bold) must clear 3:1. A pass on an average pixel is not a pass.
 - **Hero.** A blurred radial scrim behind the text (94% black at the centre, fading out by 80%) keeps the line at 7.9:1 on desktop and 5.3:1 on phones, even over the brightest particles.
-- **Session.** Each step's artwork sits under the vignette plus a flat 50% black shade, and the terminal panel is opaque. Measured notes (ash body text, p99 background): drift 5.7:1, worktree 5.9:1, telemetry 5.4:1, names 6.8:1, horizon 7.3:1. Every step clears 4.5:1 on desktop and phone.
+- **Session.** Each step's artwork sits under the vignette plus a flat 50% black shade, and the terminal panel is opaque. Measured notes (ash body text, p99 background): drift 5.7:1, worktree 5.9:1, telemetry 5.4:1, identity 6.8:1, horizon 7.3:1. Every step clears 4.5:1 on desktop and phone.
 - **Network.** No background. Canvas labels still carry a 4px black halo.
 - **Close.** No media, so there is nothing to measure against.
 - Any new artwork has to be measured this way before it ships.
@@ -230,7 +230,7 @@ A cool, faintly cyan-grey ramp from black to bone (hue around 205 to 229, chroma
 ### Hierarchy
 - **Display** (mono 700, clamp(4.5rem, 14vw, 6rem), line-height 1, tracking 0.12em with a matching text-indent so it centres optically): the `ahu` wordmark only, carrying the RGB tear and a black legibility halo rather than the glow.
 - **Headline** (mono 700, clamp(2rem, 4.4vw, 3.5rem), 1.05, 0.02em, max 18ch, glow): the closing call ("It's early. Try it.").
-- **Title** (mono 700, clamp(1.5rem, 2.4vw, 2.125rem), 1.15, 0.02em, balanced wrap, glow): one per step, and the network heading (max 16ch).
+- **Title** (mono 700, clamp(1.5rem, 2.4vw, 2.125rem), 1.15, 0.02em, balanced wrap, glow): the network heading (max 16ch). Step titles use clamp(1.375rem, 2vw, 1.875rem) so they fit the copy column in two lines.
 - **Lead** (Lexend 400, clamp(1.05rem, 2.2vw, 1.35rem), balanced wrap): the single line under the wordmark.
 - **Body** (Lexend 400, 1.0625rem, 1.6, pretty wrap, max 36ch beside the terminal, 44ch when stacked, 34ch in the network copy): story sentences, in ash.
 - **Body small** (Lexend 400, 0.9375rem, max 60ch): requirements line under the install command.
@@ -242,7 +242,7 @@ A cool, faintly cyan-grey ramp from black to bone (hue around 205 to 229, chroma
 - **Caption** (Lexend 400, 0.8125rem, dim): footer, provenance and the network source line.
 
 ### Named Rules
-**The Illustrative Example Rule.** Anything shaped like terminal output is a synthetic, clearly labelled example that follows ahu's current command syntax and general output shape. Agent names, task handles, IDs, hashes, versions and paths are placeholders (`@builder`, `[task-id]`, `[base-commit]`, `[old-digest]`, `example/app`). Never copy real task IDs, terminal output, execution traces, or local or home-directory paths into website source. Every terminal is labelled "illustrative". Prose sentences stay in Lexend.
+**The Illustrative Example Rule.** Anything shaped like terminal output is a synthetic, clearly labelled example that follows ahu's current command syntax and general output shape. Agent names, task handles, IDs, hashes, versions and paths are placeholders (`@builder`, `[task-id]`, `[base-commit]`, `[old-digest]`, `example/app`). Never copy real task IDs, terminal output, execution traces, or local or home-directory paths into website source. The footer says once that terminal sessions are illustrative; terminals carry no per-panel label. Prose sentences stay in Lexend.
 
 **The Unbroken Argument Rule.** Terminal lines wrap only between arguments; a path, URL or flag never splits mid-token. Wrapped lines hang-indent 4ch under the prompt.
 
@@ -297,12 +297,13 @@ Quiet and direct: square buttons that point at GitHub.
 - **Scroll cue:** "Watch a session" with a down arrow that nudges 4px every 2.4s.
 
 ### Step Section (signature)
-Each step is its own full-viewport section with a stable `id`. It has a mono title with glow and one ash Lexend sentence (max 36ch) on the left (2fr), and its own terminal on the right (3fr). At most one artwork sits full-bleed behind it, masked to black at the top and bottom so neighbouring sections meet cleanly. Below 900px the copy stacks above the terminal.
+Each step is its own full-viewport section with a stable `id`. It has a mono title with glow and one ash Lexend sentence (max 36ch) on the left (2fr), and its own terminal on the right (3fr). At most one artwork sits full-bleed behind it, masked to black at the top and bottom so neighbouring sections meet cleanly. Below 900px the copy stacks above the terminal. Steps whose output is a table (`wide`) stack at every width, so the terminal gets the full column and the table fits without sideways scroll on desktop.
 
 ### Terminal (signature, after or13.io's XtermTerminal)
 Every step has its own xterm.js emulator playing a synthetic example in a square panel with a hairline border and the terminal lift shadow.
-- **Title bar:** 0.75rem dim, `example/app` left (hidden on phones), "illustrative · ahu v0.5.0 syntax" right.
-- **Theme:** the landing tokens as truecolor escapes. Command in bone after a red `$ `, output in ash, agent handles in blue, warnings in red, on the panel colour. Atkinson Hyperlegible Mono, 13px (11px on phones), line height 1.4, blinking block cursor.
+- **No title bar:** the panel is only the session. Provenance is stated once, in the footer.
+- **Harness picker (`#invocation`):** the terminal is drawn as a cmux window (`#1e1e1e`, JetBrains Mono, Ghostty's default font) whose tab strip is the picker, styled as cmux draws it: a terminal glyph and title per tab, the active tab with a blue top edge and a close mark, the pane tools at the right. Each tab shows the same ahu headless hand-off (`ahu @agent --headless --background --prompt-file …`, ahu's two progress lines, a one-line reply naming the other harness and model). All four play captured frames (`harnessFrames.ts`, rendered by `FrameTerminal` as HTML cells) in each harness's own colours, header and chrome, in three beats: the shell running `ahu <harness>` with ahu's own coordinator line naming the flags it passed, the harness in that mode with the hand-off typed, then the result. Permissions are shown only as each harness shows them (Claude Code's `⏵⏵ bypass permissions on` footer, Codex's `permissions: YOLO mode` header); no permission UI is invented, and `ahu opencode`, which passes no flags, prints no coordinator line. OpenCode paints its own `#0a0a0a` screen over the terminal's. Block elements, rules and box corners are drawn as cell geometry, as Ghostty does, and every non-ASCII glyph gets an exact cell so fallback fonts never shift the grid; the font scales so 88 columns always fit. Paths, accounts and projects are placeholders (`~/example/app`, `you@example.com`, `example-project`). Arrow keys move between tabs; the choice is remembered per browser.
+- **Theme:** the landing tokens as truecolor escapes. Command in bone after a red `$ `, output in ash, agent handles in blue, warnings in red, on the panel colour. Atkinson Hyperlegible Mono, 13px (12px for tables, 11px on phones), line height 1.4, blinking block cursor. Lines break at spaces, never mid-word, with continuation rows hanging under the line's indent or bullet; a finished session redraws when the width changes.
 - **Playback:** built 400px before it reaches the viewport. When 35% visible it types the command two characters every 16ms, then prints each output line 45ms apart. The terminal is sized to its wrapped transcript, so it never needs to scroll and never traps the wheel.
 - **Replay shell:** afterwards a prompt waits. The step's own command replays the recording, `help` says what this is, `clear` clears, and anything else answers "not in this recording. Install ahu to run it for real." Nothing is executed.
 - **Fallbacks:** the same transcript renders as a static `<pre>` without JavaScript, and stays in the DOM as sr-only text for screen readers. Reduced motion prints everything at once.
@@ -316,8 +317,8 @@ Every section carries at most one background image or major artwork, and no asse
 | Section (fragment) | Artwork |
 |---|---|
 | Hero `#top` | The particle moai; renders only while the hero is on screen |
-| A name should mean something `#names` | *After Hours* (or13.io `empty-lot`) video |
-| Name an agent to start `#start` | *Terminus* (or13.io `overgrown-tracks`) photo |
+| Named agents you can trust `#identity` | *After Hours* (or13.io `empty-lot`) video |
+| One harness can call another `#invocation` | *Terminus* (or13.io `overgrown-tracks`) photo |
 | Change an agent, and ahu notices `#drift` | Cracked glass, screened at 35% |
 | Every task gets its own worktree `#worktree` | *Dark Water* (or13.io `polluted-canal`) video |
 | It says what it can't see `#horizon` | *Subterranean* (or13.io `underground`) video |

@@ -1,16 +1,18 @@
+import HarnessTerminal from "./HarnessTerminal";
 import LoopVideo from "./LoopVideo";
 import StepTerminal from "./StepTerminal";
 import { STEPS } from "./transcript";
 
 /**
  * Each step is its own linkable section with at most one artwork behind it
- * and its own replayable terminal.
+ * and its own replayable terminal. Wide tables stack under their copy so the
+ * terminal gets the full column and rarely scrolls sideways.
  */
 export default function Steps() {
   return (
     <>
       {STEPS.map((step) => (
-        <section key={step.id} id={step.id} className="step" aria-labelledby={`${step.id}-heading`}>
+        <section key={step.id} id={step.id} className={`step ${step.wide ? "step--wide" : ""}`} aria-labelledby={`${step.id}-heading`}>
           {step.backdrop && (
             <div className={`step-media step-media--${step.backdrop.kind}`} aria-hidden="true">
               {step.backdrop.kind === "video" ? (
@@ -35,7 +37,11 @@ export default function Steps() {
             </h2>
             <p>{step.note}</p>
           </div>
-          <StepTerminal step={step} />
+          {step.variants ? (
+            <HarnessTerminal step={step} variants={step.variants} />
+          ) : (
+            <StepTerminal step={step} />
+          )}
         </section>
       ))}
     </>
