@@ -188,7 +188,7 @@ Every effect earns its place against legibility (from or13.io's anti-reference "
 
 - **How to measure.** With the text hidden, capture the area behind the text block and take the 99th-percentile luminance of the background. Body text must clear 4.5:1 against that value; large text (24px+ bold) must clear 3:1. A pass on an average pixel is not a pass.
 - **Hero.** A blurred radial scrim behind the text (94% black at the centre, fading out by 80%) keeps the line at 7.9:1 on desktop and 5.3:1 on phones, even over the brightest particles.
-- **Session.** Each step's artwork sits under the vignette plus a flat 50% black shade, and the terminal panel is opaque. Measured notes (ash body text, p99 background): drift 5.7:1, worktree 5.9:1, telemetry 5.4:1, identity 6.8:1, horizon 7.3:1. Every step clears 4.5:1 on desktop and phone.
+- **Session.** Each step's artwork sits under the vignette plus a flat 50% black shade, and the terminal panel is opaque. Measured notes (ash body text, p99 background): lock 5.7:1, worktree 5.9:1, telemetry 5.4:1, identity 6.8:1, horizon 7.3:1. Every step clears 4.5:1 on desktop and phone.
 - **Network.** No background. Canvas labels still carry a 4px black halo.
 - **Close.** No media, so there is nothing to measure against.
 - Any new artwork has to be measured this way before it ships.
@@ -319,13 +319,12 @@ Every section carries at most one background image or major artwork, and no asse
 | Hero `#top` | The particle moai; renders only while the hero is on screen |
 | Named agents you can trust `#identity` | *After Hours* (or13.io `empty-lot`) video |
 | One harness can call another `#invocation` | *Terminus* (or13.io `overgrown-tracks`) photo |
-| Change an agent, and ahu notices `#drift` | Cracked glass, screened at 35% |
+| A lockfile for your agents `#lock` | Cracked glass, screened at 35% |
 | Every task gets its own worktree `#worktree` | *Dark Water* (or13.io `polluted-canal`) video |
 | It says what it can't see `#horizon` | *Subterranean* (or13.io `underground`) video |
 | Skills are context `#skills` | *Gutted* (or13.io `gutted-tv`) photo |
 | Your coordinator can ask ahu over MCP `#mcp` | *Container Port* (or13.io `container-port`) video |
 | Telemetry is off until you opt in `#telemetry` | *Landfill* (or13.io `landfill`) video |
-| One command checks all of it `#doctor` | *Keep Out* (or13.io `broken-windows`) photo |
 | Try it when one agent isn't enough `#when` | *Last Exit* (or13.io `decay-corridor`) photo |
 | Network map `#network` | none. The visual stands on its own |
 | Install `#install` | none |

@@ -37,8 +37,13 @@ export default function Steps() {
             </h2>
             <p>{step.note}</p>
           </div>
-          {step.variants ? (
-            <HarnessTerminal step={step} variants={step.variants} />
+          {step.variants || step.frames ? (
+            <HarnessTerminal
+              step={step}
+              variants={
+                step.variants ?? [{ id: step.id, label: step.tab ?? step.label, prompt: "$ ", lines: step.lines, frames: step.frames }]
+              }
+            />
           ) : (
             <StepTerminal step={step} />
           )}

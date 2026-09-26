@@ -25,8 +25,10 @@ export default function HarnessTerminal({ step, variants }: { step: Step; varian
     } catch {}
   }, [variants]);
 
+  // Only a real choice between harnesses is worth remembering.
   const pick = (next: string) => {
     setId(next);
+    if (variants.length < 2) return;
     try {
       localStorage.setItem(STORAGE_KEY, next);
     } catch {}

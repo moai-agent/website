@@ -6,7 +6,7 @@
  * local paths into this file.
  */
 
-import { HARNESS_FRAMES } from "./harnessFrames";
+import { HARNESS_FRAMES, LOCK_FRAMES } from "./harnessFrames";
 
 /** The ahu release whose command syntax these examples follow. */
 export const AHU_VERSION = "v0.5.0";
@@ -57,7 +57,7 @@ export interface Variant {
 }
 
 export interface Step {
-  /** Also the step's URL fragment, e.g. moai-agent.com/#drift. */
+  /** Also the step's URL fragment, e.g. moai-agent.com/#lock. */
   id: string;
   /** Short name for the section dots. */
   label: string;
@@ -69,6 +69,10 @@ export interface Step {
   wide?: boolean;
   /** One rendering per harness; the viewer picks the one they recognize. */
   variants?: Variant[];
+  /** Captured screens shown in the cmux window instead of typing `lines`. */
+  frames?: string[][];
+  /** The cmux tab title for `frames`. */
+  tab?: string;
 }
 
 const cmd = (text: string): Line => ({ kind: "cmd", text });
@@ -177,19 +181,24 @@ export const STEPS: Step[] = [
     ],
   },
   {
-    id: "drift",
-    label: "Drift",
+    id: "lock",
+    label: "Lock",
     backdrop: { kind: "overlay", src: "/media/cracked-glass.webp" },
-    heading: "Change an agent, and ahu notices.",
-    note: "Same name, different inputs? You see it before the launch. If a harness or model is missing, the launch fails. ahu never swaps in another.",
+    heading: "A lockfile for your agents.",
+    note: "Each agent's harness, model, and instructions are pinned in your repo. ahu doctor names any agent that no longer matches its lock.",
+    // ahu doctor in the cmux terminal, as captured (see harnessFrames.ts).
+    tab: "ahu doctor",
+    frames: LOCK_FRAMES,
     lines: [
-      cmd("ahu @builder 'Fix the flaky cleanup test.' --dry-run"),
-      warn("!! CONFIGURATION DRIFT: the selected agent's effective inputs changed."),
-      warn(`Drift since the last builder@1.2.0 launch (task ${TASK}, [launched-at])`),
-      warn("  - the repository agent configuration changed: [old-digest] -> [new-digest]"),
+      cmd("ahu doctor"),
+      out("harness      antigravity 1.2.11 — executable ready"),
+      out("harness      claude-code 2.1.283 (Claude Code) — executable ready"),
+      out("harness      codex 0.157.0 — executable ready"),
+      out("harness      opencode 1.18.32 — executable ready"),
+      out("skills       5/5 bundled skills verified; 0 missing, 0 changed"),
+      out("drift        @builder"),
       gap,
-      out("The version label has not changed, but the effective inputs have. Any of these can make the agent behave differently from earlier runs under the same name."),
-      out("Treat this as a pending behavior bundle: bump the agent's version and record what changed. ahu does not do that for you, and it does not claim this change is a harmless patch."),
+      warn("No blocking problems found. 1 warning(s) above affect behaviour but do not stop a launch."),
     ],
   },
   {
@@ -274,27 +283,6 @@ export const STEPS: Step[] = [
       out("[telemetry]"),
       out("enabled = true"),
       out('endpoint = "http://127.0.0.1:4318"'),
-    ],
-  },
-  {
-    id: "doctor",
-    label: "Doctor",
-    backdrop: { kind: "photo", src: "/media/broken-windows.webp" },
-    heading: "One command checks all of it.",
-    note: "ahu doctor checks harnesses, hooks, telemetry, hygiene cadence, bundled skills, drift, and cmux, and says which warnings stop a launch.",
-    lines: [
-      cmd("ahu doctor"),
-      out("harness      claude-code — executable ready"),
-      out("harness      codex — executable ready"),
-      out("harness      opencode — executable ready"),
-      out("telemetry    off (local telemetry is opt-in)"),
-      out("hygiene      architect@1.0.0: current"),
-      warn("hygiene      reviewer@1.1.0: due (interval elapsed)"),
-      out("skills       5/5 bundled skills verified; 0 missing, 0 changed"),
-      warn("drift        @builder"),
-      out("cmux         reachable"),
-      gap,
-      out("No blocking problems found. 2 warning(s) above affect behaviour but do not stop a launch."),
     ],
   },
   {
