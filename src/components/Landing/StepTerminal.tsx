@@ -107,13 +107,15 @@ export default function StepTerminal({ step }: { step: Step }) {
       let input = "";
       term!.onData((data) => {
         if (data === "\r") {
-          const cmd = input.trim();
+          const cmd = input.trim().replace(/\s+/g, " ");
           input = "";
           term!.write("\r\n");
           if (cmd === "clear") term!.clear();
           else if (cmd === "help")
             term!.write(`${COLOR.out}Illustrative ahu ${AHU_VERSION} session, not live output. Try: ${COLOR.cmd}${command || "clear"}${RESET}\r\n`);
-          else if (cmd && command && (cmd === command || cmd === command.split(" ").slice(0, 2).join(" "))) {
+          // Replay only the exact example: a shortened form like `ahu mcp` is not
+          // a valid v0.5.0 command and must not appear to succeed.
+          else if (cmd && command && cmd === command) {
             for (const line of step.lines.slice(step.lines.findIndex((l) => l.kind === "cmd") + 1)) print(line);
           } else if (cmd)
             term!.write(`${COLOR.out}${cmd.split(" ")[0]}: not in this example. Install ahu to run it for real.${RESET}\r\n`);
