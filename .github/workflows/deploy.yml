@@ -3,6 +3,9 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  # Rebuild daily so the install command picks up new ahu releases.
+  schedule:
+    - cron: "17 6 * * *"
   workflow_dispatch:
 
 permissions:
@@ -31,6 +34,9 @@ jobs:
       # `next build` type-checks as part of the build.
       - name: Build static export
         run: bun run build
+        env:
+          # Authenticates the latest-release lookup (read-only, public repo).
+          GITHUB_TOKEN: ${{ github.token }}
 
       # `enablement` turns Pages on if it is off, so a fresh clone of this
       # repo deploys without a manual visit to Settings -> Pages.

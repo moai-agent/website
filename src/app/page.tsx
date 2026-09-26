@@ -3,6 +3,7 @@ import HeroMoai from "@/components/Landing/HeroMoai";
 import SectionDots from "@/components/Landing/SectionDots";
 import Network from "@/components/Landing/Network";
 import Steps from "@/components/Landing/Steps";
+import { installCommand, latestAhuTag } from "@/components/Landing/latestRelease";
 import { REPO_URL } from "@/components/Landing/transcript";
 import "@/components/Landing/landing.css";
 
@@ -33,7 +34,9 @@ function Arrow({ down = false }: { down?: boolean }) {
   );
 }
 
-export default function Home() {
+export default async function Home() {
+  const install = installCommand(await latestAhuTag());
+
   return (
     <div className="landing">
       <SectionDots />
@@ -69,7 +72,7 @@ export default function Home() {
 
         <section className="close" id="install" aria-labelledby="close-heading">
           <h2 id="close-heading">It’s early. Try it.</h2>
-          <CopyInstall />
+          <CopyInstall command={install} />
           <p className="close-needs">
             Needs Rust, Git, and the agent CLIs you already use. Interactive sessions run in cmux.
           </p>
