@@ -236,10 +236,11 @@ export default function Network() {
   return (
     <section className="network" id="network" aria-labelledby="network-heading">
       <div className="network-copy">
-        <h2 id="network-heading">
-          {AGENTS.length} agents. {HARNESSES.length} harnesses. One repo.
-        </h2>
-        <p>Every agent pinned to one harness and one model. Blue agents are mid-task. Hover or tap to trace one.</p>
+        <h2 id="network-heading">Orchestrate frontier agents without losing track.</h2>
+        <p>
+          {AGENTS.length} agents across {HARNESSES.length} harnesses, one lockfile. Each pinned, each on its own
+          branch, each checked for drift. Hover or tap to trace one.
+        </p>
       </div>
       <div className="network-stage" ref={wrapRef}>
         <canvas
