@@ -8,6 +8,7 @@ const mono = Atkinson_Hyperlegible_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
   display: "swap",
+  adjustFontFallback: false,
 });
 
 const sans = Lexend({

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "bun run scripts/generate-og.tsx && next build",
+    "build": "bun run scripts/generate-og.tsx && next build --webpack",
     "start": "next start",
     "lint": "tsc --noEmit",
     "og": "bun run scripts/generate-og.tsx"
