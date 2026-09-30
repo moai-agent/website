@@ -202,7 +202,7 @@ export default function StepTerminal({
           else if (cmd === "help")
             print({ kind: "out", text: `Illustrative ahu ${AHU_VERSION} session, not live output. Try: ${command || "clear"}` });
           // Replay only the exact example: a shortened form like `ahu mcp` is not
-          // a valid v0.5.0 command and must not appear to succeed.
+          // a valid v0.6.0 command and must not appear to succeed.
           else if (cmd && command && cmd === command) {
             for (const line of lines.slice(lines.findIndex((l) => l.kind === "cmd") + 1)) print(line);
           } else if (cmd)

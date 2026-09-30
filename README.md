@@ -17,8 +17,9 @@ harnesses, and models.
 ## Content
 
 Every terminal and the network map show illustrative, synthetic examples. They
-follow ahu's current (v0.5.0) command syntax and general output shape, but
-agent names, task handles, IDs, hashes, versions and paths are placeholders:
+follow ahu v0.6.0's command syntax and general output shape, but agent names,
+task handles, IDs, hashes, versions and paths are placeholders. Some output is
+shortened or adjusted for marketing clarity:
 
 - `src/components/Landing/transcript.ts`: every step's heading, note, backdrop
   and example terminal session.

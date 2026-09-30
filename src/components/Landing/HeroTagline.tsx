@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import DecryptText from "./DecryptText";
 
-/** The harnesses ahu v0.5.0 launches, by product name. Antigravity, not the model behind it. */
+/** The harnesses ahu launches, by product name. Antigravity, not the model behind it. */
 const HARNESSES = ["Claude Code", "Codex", "Antigravity", "OpenCode"];
 
 const HOLD_MS = 5200;

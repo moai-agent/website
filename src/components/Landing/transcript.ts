@@ -1,6 +1,6 @@
 /**
  * Illustrative ahu sessions. Every transcript here is synthetic: it follows
- * the command syntax and general shape of ahu v0.5.0, but agent names, task
+ * the command syntax and general shape of ahu v0.6.0, but agent names, task
  * handles, IDs, hashes, versions and paths are placeholders, not captured
  * output. Never paste real task IDs, terminal output, execution traces, or
  * local paths into this file.
@@ -18,13 +18,13 @@ import {
 } from "./harnessFrames";
 
 /** The ahu release whose command syntax these examples follow. */
-export const AHU_VERSION = "v0.5.0";
+export const AHU_VERSION = "v0.6.0";
 
 /** Bracketed placeholders: never shaped like a real ID, digest, or hash. */
 const TASK = "[task-id]";
 const BASE = "[base-commit]";
 
-/** The headless hand-off every harness variant shows, in ahu v0.5.0's shape. */
+/** The headless hand-off every harness variant shows, in ahu v0.6.0's shape. */
 const LAUNCH = "ahu @researcher --headless --background --prompt-file research.txt";
 const HEADLESS = `Headless @researcher on antigravity / gemini-3.1-pro-high; output .ahu/state/tasks/${TASK}`;
 const HANDOFF = `Task @flaky-survey (ahu:task:${TASK})`;
@@ -239,7 +239,7 @@ export const STEPS: Step[] = [
     backdrop: { kind: "photo", src: "/media/gutted-tv.webp" },
     heading: "Context you can audit.",
     note: "Each agent's instructions are a file in your repo. ahu writes its skills there too, for you to review and commit.",
-    // ahu agents and ahu mcp setup in the cmux terminal (see harnessFrames.ts).
+    // ahu agents and ahu setup in the cmux terminal (see harnessFrames.ts).
     tab: "~/example/app",
     frames: CONTEXT_FRAMES,
     cols: CONTEXT_COLS,
@@ -250,10 +250,10 @@ export const STEPS: Step[] = [
       key("@researcher 1.0.0  antigravity  gemini-3.1-pro-high   .agents/ahu/agents/researcher.md"),
       key("@reviewer 1.1.0    opencode     ollama/glm-5.3:cloud  .agents/ahu/agents/reviewer.md"),
       gap,
-      cmd("ahu mcp setup"),
-      out("Wrote ~/example/app/.agents/skills/discover-requirements/SKILL.md"),
-      out("Wrote ~/example/app/.agents/skills/direct-agents/SKILL.md"),
-      out("Wrote ~/example/app/.agents/skills/context-hygiene/SKILL.md"),
+      cmd("ahu setup"),
+      out("Configured MCP access for detected harnesses"),
+      out("Installed project skills and created harness dev agents"),
+      out("Updated ahu.lock for review"),
     ],
   },
   {
