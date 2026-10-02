@@ -1,0 +1,127 @@
+---
+name: ahu-direct-agents
+description: Coordinate repository work through registered ahu agents and task records.
+---
+# Direct agents
+
+Use this skill when coordinating work inside an ahu task. Registered agents are
+launched through ahu, with their configured harness, model, permissions, and
+fresh worktree. Do not impersonate an agent with native harness delegation or
+silently substitute another harness. The workflow is tracker- and terminal-
+neutral: GitHub and cmux are supported integrations, not assumptions every
+project or machine must satisfy.
+
+## Assign work
+
+Discover identities with `ahu agents`. Put the complete assignment in a UTF-8
+file outside every repository, then launch it with:
+
+```sh
+ahu @agent-name --prompt-file /absolute/path/to/task.txt
+```
+
+Use `--headless --background --output json` for unattended work. Approval
+widening requires the explicit `--allow-widened-approvals` flag. Use `--dry-run`
+to inspect a launch before submitting it. Record each returned task id and
+worktree, plus a terminal-surface reference when the selected backend provides
+one.
+
+## Inspect and accept
+
+Use `ahu tasks`, `ahu task <id>`, `ahu wait <id>`, and `ahu result <id>` to track
+assignments. A process exit is not proof of completion: read `result.md`, inspect
+the diff and validation evidence, and review the actual commit before integrating.
+For an interactive task, inspect its recorded terminal surface only when that
+surface is available. CMUX uses `cmux read-screen --workspace <id> --scrollback`;
+headless tasks have no workspace to read. Do not make a terminal transcript the
+durable task record. Keep prompts, reports, and execution traces outside
+repositories.
+
+Children inherit the parent's current HEAD, not uncommitted source edits. For a
+review of local changes, name the source checkout and exact revision or diff in
+the assignment. Keep issue updates with the coordinator responsible for the
+parent work, and do not push unless explicitly authorized.
+
+## Long-running work and tracker records
+
+Follow this repository's work-tracking policy when one exists. A project may
+require a tracker record for certain work, use records only for releases or
+long-running assignments, or choose not to use an external tracker. Do not
+assume GitHub, a private roadmap, or any tracker is available. When no provider
+or tracking policy is configured, use the ahu task record for execution and
+report that no external work item is linked; do not invent a tracker workflow.
+
+When policy requires a durable work item, create or resolve it before launch.
+After ahu returns a task ID, link that execution from the provider-side work
+item using its native relation, reference field, or private activity record.
+Keep ahu task IDs, handles, attempts, and branches as execution identifiers;
+the provider-side work item remains the record for acceptance criteria,
+validation evidence, failures, and disposition. Update the link as the task is
+resumed or its commit/review is delivered, and close the work item only under
+the repository's policy after acceptance and required delivery checks pass.
+Use the provider's native representation; this does not require a particular
+issue-to-task cardinality.
+
+Do not put private tracker identifiers, URLs, titles, or contents into ahu
+prompts, task records, result reports, public files, or commits. Tracker tools
+and skills manage the link on the provider side.
+
+`ahu cleanup` removes recognized temporary captures and bounded requests after
+termination is known; it retains the task record, results, native sessions,
+branch, and worktree. `ahu remove` can remove the task record, worktree, and
+branch after the task is terminal and its changes are safely integrated. Keep
+the provider-side work item and its delivery evidence according to repository
+policy when removing local ahu execution state.
+
+Use a provider adapter or MCP server for tracker operations. When the provider
+is GitHub, issues, labels, projects, and milestones are one possible mapping;
+do not bake repository names, issue-number formats, label names, project field
+IDs, or milestone semantics into task prompts or public skill prose.
+
+When tracker integration is part of repository policy, its provider contract is
+intentionally small. It should resolve the work area and visibility boundary,
+find or create a durable work record, read and update lifecycle plus current-
+agent state, append validation evidence, link the ahu task and any parent,
+child, or release context, and close the record only after delivery checks. A
+project may implement this with a tracker MCP, a provider adapter, or another
+approved skill/tool workflow. Provider identifiers stay in the provider; ahu
+task IDs, worktrees, and attempts remain separate execution identifiers. If a
+required provider operation is unavailable, report the capability gap rather
+than approximating it with a public comment or local repository file.
+
+Use the provider's coordination fields, labels, tags, or status values instead
+of personal assignees when the project is maintained by one maintainer. Preserve
+one lifecycle state (planned, active, review, blocked, or done) and one current
+agent identity, using the provider's native representation. Add a failure or
+delivery marker only for an active condition, such as retry, missing evidence,
+or uncommitted work. Remove stale agent and failure markers when the state
+changes. The coordinator owns comments, state transitions, release/milestone
+links, and closure after acceptance criteria and delivery checks are complete;
+an agent does not close its record merely because its process exited.
+
+Before any tracker write, verify the visibility and access boundary of the
+record, its project, and linked objects. For GitHub, a private project does not
+make a linked public repository or public issue private. Never copy private
+record titles, bodies, labels, identifiers, tracker URLs, roadmap ordering, or
+finding-to-fix mappings into the public repository, its knowledge base, task
+prompts, result reports, or commits. If the provider cannot prove the boundary
+or a write fails, record the tracking blocker in the private handoff and leave
+the record open.
+
+## Boundaries
+
+ahu owns identity resolution, worktree creation, task records, permissions,
+delivery fencing, and task lifecycle. A terminal adapter may display or focus
+a task, but it does not become the source of task truth. This skill supplies the
+operator workflow;
+it does not grant authority or change those checks. Report unavailable agents,
+denied launches, missing credentials, incomplete reports, and unjoined children
+as blockers. Never replace a configured harness or model after failure.
+
+Maintain this file at `.agents/skills/ahu-direct-agents/SKILL.md`. Run `ahu setup`
+to install the user-facing skills in the paths supported by detected harnesses.
+Codex, OpenCode, and Antigravity use `.agents/skills/`; Claude Code uses
+`.claude/skills/`. A skill file being present does not prove that a harness
+loaded it. When the ahu MCP server is connected, its inspection tools are
+available alongside the ahu CLI; use `ahu_agents_list`, `ahu_tasks_list`, and
+`ahu_task_get` when they fit the task.
