@@ -7,7 +7,7 @@ status: stable
 tags: [agents, design, typography, assets]
 harness: claude-code
 model: claude-opus-5
-permissions: auto
+permissions: prompt
 version: 1.0.0
 ---
 

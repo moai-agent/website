@@ -1,5 +1,5 @@
 schema_version = 1
-digest = "779f5b24662508d9090d2f2f958d6df881c8b5f2d517741fe45bbac3f46ba8fc"
+digest = "30ede4e3c22dce3e847645fda38789118822198377d3b71486e869dcd48f4eb9"
 skipped_directories = [
     ".ahu",
     ".next",
@@ -11,20 +11,20 @@ symlinks = []
 
 [[entries]]
 path = ".agents/ahu/agents/design-agy.md"
-digest = "fde4bc39ce3c3859a84232b5586b2e3fe6fd8278fcd62c835687f94152ccd69a"
-bytes = 1829
+digest = "57b4b5c17ef893b19accd43a4d61fb04be74e099f074e19412cbfb38f3f37005"
+bytes = 1831
 executable = false
 
 [[entries]]
 path = ".agents/ahu/agents/design-astra.md"
-digest = "27b4de1da492a34a81985558639d0af264d957b086f71d06d5ded36fdfdda645"
-bytes = 1185
+digest = "da54fb594f8d44abc1afa0017b49ed092bfa4129144855d78054f357e15fb4a9"
+bytes = 1187
 executable = false
 
 [[entries]]
 path = ".agents/ahu/agents/design-opus.md"
-digest = "df7157e7878ea4049e521dc06e0609c3faee032402c43f029637c5bdc81e0e7c"
-bytes = 1739
+digest = "4b82169213a179a3721ff1898a2c8a7faab717ec53ba3a0af45186b60371309e"
+bytes = 1741
 executable = false
 
 [[entries]]

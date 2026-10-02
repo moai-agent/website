@@ -7,7 +7,7 @@ status: stable
 tags: [agents, design, 3d, frontend]
 harness: antigravity
 model: gemini-3.1-pro-high
-permissions: auto
+permissions: prompt
 version: 1.0.0
 ---
 
