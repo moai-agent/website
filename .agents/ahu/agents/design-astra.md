@@ -7,7 +7,7 @@ status: stable
 tags: [agents, design, components, architecture]
 harness: codex
 model: gpt-6-astra
-permissions: prompt
+permissions: auto
 version: 1.0.0
 ---
 
