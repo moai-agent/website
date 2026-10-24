@@ -1,4 +1,6 @@
-import { AHU_VERSION, REPO_URL } from "./transcript";
+import { REPO_URL } from "./transcript";
+
+const FALLBACK_TAG = "v0.10.0";
 
 const RELEASES_API = "https://api.github.com/repos/moai-agent/ahu/releases?per_page=20";
 
@@ -9,14 +11,14 @@ const RELEASE_TAG = /^v\d+\.\d+\.\d+$/;
  * The newest published ahu tag, including prereleases, resolved once per `next build`,
  * so the install command floats with each deploy. In CI a failed lookup fails
  * the build and the live site keeps its last good tag; locally it falls back
- * to the version the transcripts follow.
+ * to the last verified published tag, independently of illustrative transcripts.
  */
 export async function latestAhuTag(): Promise<string> {
   try {
     const headers: Record<string, string> = { Accept: "application/vnd.github+json" };
     // Shared CI runners hit the unauthenticated rate limit; the workflow passes its token.
     if (process.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
-    const res = await fetch(RELEASES_API, { headers });
+    const res = await fetch(RELEASES_API, { headers, redirect: "error", signal: AbortSignal.timeout(10000) });
     if (!res.ok) throw new Error(`GitHub answered ${res.status}`);
     const releases = (await res.json()) as Array<{ tag_name?: unknown; draft?: unknown }>;
     const tag = releases.find(
@@ -26,9 +28,12 @@ export async function latestAhuTag(): Promise<string> {
     return tag;
   } catch (error) {
     if (process.env.CI) throw new Error(`Could not resolve the latest ahu release: ${error}`);
-    console.warn(`Could not resolve the latest ahu release (${error}); using ${AHU_VERSION}.`);
-    return AHU_VERSION;
+    console.warn(`Could not resolve the latest ahu release (${error}); using ${FALLBACK_TAG}.`);
+    return FALLBACK_TAG;
   }
 }
 
-export const installCommand = (tag: string) => `cargo install --git ${REPO_URL} --tag ${tag} --locked`;
+export function installCommand(tag: string): string {
+  if (!RELEASE_TAG.test(tag)) throw new Error("Invalid release tag");
+  return `cargo install --git ${REPO_URL} --tag ${tag} --locked`;
+}

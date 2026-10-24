@@ -16,7 +16,7 @@
     "@tailwindcss/postcss": "^4.2.2",
     "@xterm/addon-fit": "^0.11.0",
     "@xterm/xterm": "^6",
-    "next": "^16.3.4",
+    "next": "^16.4.3",
     "postprocessing": "^6.39.4",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
@@ -29,5 +29,9 @@
     "@types/react-dom": "^19.2.4",
     "@types/three": "^0.185.0",
     "typescript": "^5.9.3"
+  },
+  "overrides": {
+    "source-map-js": "1.2.2",
+    "sharp": "0.35.5"
   }
 }

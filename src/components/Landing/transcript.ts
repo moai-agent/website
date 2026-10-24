@@ -220,7 +220,7 @@ export const STEPS: Step[] = [
     label: "Worktrees",
     backdrop: { kind: "video", name: "dark-water" },
     heading: "Every task is a branch you can review.",
-    note: "A fresh worktree per task, so each agent's work lands as a branch you diff, merge, or throw away.",
+    note: "A fresh Git worktree per task gives you a branch to review and merge. Worktrees separate changes; they do not sandbox agents.",
     // ahu tasks in the cmux terminal, as captured (see harnessFrames.ts).
     tab: "~/example/app",
     frames: WORKTREE_FRAMES,
@@ -261,7 +261,7 @@ export const STEPS: Step[] = [
     label: "Evals",
     backdrop: { kind: "video", name: "landfill" },
     heading: "Pick agents on evidence.",
-    note: "ahu eval shows which agent gets your work right, whether it reaches for the right MCP tools, and what it costs in tokens and time, all traced with local OpenTelemetry.",
+    note: "Evaluate answers and observed MCP calls with local OpenTelemetry. Token and timing coverage varies by harness and mode; missing usage and cost stay unknown.",
     // ahu eval report in the cmux terminal, as captured (see harnessFrames.ts).
     tab: "~/example/app",
     frames: EVALS_FRAMES,

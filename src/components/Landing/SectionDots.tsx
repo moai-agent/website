@@ -6,6 +6,7 @@ import { STEPS } from "./transcript";
 const SECTIONS = [
   { id: "top", label: "ahu" },
   ...STEPS.map((s) => ({ id: s.id, label: s.label })),
+  { id: "plugins", label: "Plugins" },
   { id: "network", label: "Network" },
   { id: "install", label: "Install" },
 ];

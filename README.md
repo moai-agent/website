@@ -3,7 +3,7 @@
 The home of [ahu](https://github.com/moai-agent/ahu), and the site's only page.
 A GPU particle moai (drag it to rotate and glitch) opens the page. Each step
 below is its own linkable section with a replayable xterm.js terminal playing an
-illustrative ahu session. The page ends with a map of the ahu repository's own agents,
+illustrative ahu session. The page ends with a map of example agents,
 harnesses, and models.
 
 ## Stack
@@ -31,6 +31,12 @@ into these files. When ahu's CLI changes, update the examples to the new
 syntax by hand. `PRODUCT.md` and `DESIGN.md` record the audience, voice, and
 visual rules.
 
+The plugin architecture section previews v0.11 and describes current-terminal
+and headless execution without cmux or GitHub. External skills/plugins own those
+integrations. Until v0.11 is published, keep its preview label and the distinction
+from the install command, which resolves a published release. Historical terminal
+artwork does not certify current harness compatibility or complete token costs.
+
 ## Develop
 
 ```bash
@@ -50,7 +56,12 @@ bun run build   # generates public/og.png, then exports to ./out
 
 Pushing to `main` runs `.github/workflows/deploy.yml`, which builds the static
 export and publishes `./out` to GitHub Pages. `public/CNAME` pins the custom
-domain to `moai-agent.com`.
+domain to `moai-agent.com`. Pages must already be configured in repository settings.
+Build jobs have read-only repository access; only the deployment job receives
+Pages and identity-token permissions. Action commits and Bun are pinned.
+The release lookup refuses redirects and times out after ten seconds; CI fails
+if it cannot resolve a published release. Local fallback uses a verified published
+tag rather than the historical artwork version.
 
 ## Media
 

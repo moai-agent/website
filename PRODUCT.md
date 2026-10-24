@@ -12,7 +12,7 @@ Developers who already run coding agents (Claude Code, Codex, OpenCode, Antigrav
 
 ## Product Purpose
 
-moai-agent.com is the public home of `ahu`, a Rust CLI that launches repository-defined coding agents in fresh Git worktrees, interactively in cmux or unattended in headless mode. The site explains why ahu exists, how it works, and when it is worth trying. Success: a visiting developer understands the mechanism (repo-pinned agent identity + isolated worktree per task + context kept in the repository), gets curious, and goes to the GitHub repo to try it and give feedback.
+moai-agent.com is the public home of `ahu`, a Rust CLI that launches repository-defined coding agents in fresh Git worktrees, in the current terminal, through an optional session-host plugin, or unattended in headless mode. The site explains why ahu exists, how it works, and when it is worth trying. Success: a visiting developer understands the mechanism (repo-pinned agent identity + separate Git worktree per task + context kept in the repository), gets curious, and goes to the GitHub repo to try it and give feedback.
 
 ## Positioning
 
@@ -21,17 +21,17 @@ An ahu agent is a named, reviewable identity (name, harness, exact model, instru
 ## Operating Context
 
 - Git checkout, `.worktrees/` per task on `ahu/<agent>/<task-id>` branches.
-- cmux terminal for interactive sessions; headless supervisor for unattended runs.
-- Agent manifests in `.agents/ahu/agents/*.md`; project policy in `.agents/ahu/config.toml`, shared through Git (ahu never stages, commits, or pushes).
-- GitHub issues and projects as the planning surface; agents use `gh`, ahu does not.
+- Current-terminal interactive sessions by default; optional external cmux session-host plugin; headless supervisor needs no terminal plugin.
+- Agent manifests in `.agents/ahu/agents/*.md`; project policy in `.agents/ahu/config.md`, shared through Git (ahu never stages, commits, or pushes).
+- Issue tracking is optional. GitHub skills use `gh`; optional executable plugins provide structured operations. Provider APIs, authentication and issue transitions stay outside core.
 
 ## Capabilities and Constraints
 
 - Commands: `ahu`, `ahu @agent [prompt]`, `ahu doctor`, `ahu agents`, `ahu launch @agent` (backward-compatible), `ahu tasks`, `ahu task`, `ahu result`, `ahu focus`, `ahu cancel`, `ahu explain`, `ahu mcp serve`.
 - Prompt delivery in nonce-bearing sections (contract, state, instructions, task); prompt text, not an enforced system prompt.
 - Headless child dispatch requires explicit host grants.
-- ahu holds no provider credentials and installs no harnesses.
-- Public at https://github.com/moai-agent/ahu, pre-1.0 (latest release: v0.5.0, published 2026-09-25). Install: `cargo install --git https://github.com/moai-agent/ahu --tag <latest release> --locked`; the site resolves the tag from the latest GitHub release at build time and rebuilds daily. Call it early; make no stability claims.
+- Harness authentication stays native. Optional decision services may use explicitly configured credentials. ahu installs no harnesses; plugin grants are not OS confinement.
+- Public at https://github.com/moai-agent/ahu, pre-1.0. Install: `cargo install --git https://github.com/moai-agent/ahu --tag <latest release> --locked`; the site resolves the tag from the latest GitHub release at build time and rebuilds daily. Call it early; make no stability claims.
 - The site's job is to send developers to the GitHub repo to try ahu and give feedback.
 - One page for as long as possible. Static export (Next.js `output: "export"`) on GitHub Pages; no backend.
 
@@ -77,7 +77,7 @@ TLDR: ahu launches named coding agents, each pinned to its harness and model, in
 ## Evidence on Hand
 
 - Public ahu README (install, everyday use, agent table, command table).
-- ahu v0.5.0 command syntax: `ahu @agent [prompt]` (no prompt opens the launcher with the agent preselected), the backward-compatible `ahu launch @agent`, `ahu doctor`, `ahu agents` with drift status, and compact `ahu tasks`.
+- Historical synthetic walkthrough command syntax: `ahu @agent [prompt]` (no prompt opens the launcher with the agent preselected), the backward-compatible `ahu launch @agent`, `ahu doctor`, `ahu agents` with drift status, and compact `ahu tasks`.
 - Licensed or13.io media library (videos and photographs in `public/media/`).
 - Examples on the site are synthetic: never publish real task IDs, terminal output, execution traces, or local paths.
 - No users, testimonials, benchmarks, or adoption numbers. Do not invent them.
@@ -91,3 +91,17 @@ TLDR: ahu launches named coding agents, each pinned to its harness and model, in
 4. Defer to each harness's native conventions.
 5. Say what you cannot see.
 6. Signal over spectacle (from or13.io): a high-signal scan must resolve in seconds; legibility outranks flourish.
+
+## Integration architecture and release accuracy
+
+Keep ahu a thin wrapper for harness launch, task/attempt state, worktree lifecycle,
+MCP coordination and bounded telemetry/evaluation. Prefer skills using existing
+CLIs; add external executable plugins only for required machine-readable contracts.
+Do not imply cmux, GitHub, automatic issue synchronization or a provider registry
+is part of core. Harness adapters remain compiled into ahu today.
+
+The plugin section describes the v0.11 release candidate until publication is
+verified. The install command must continue to select a published tag. Historical
+synthetic terminal artwork is illustrative, not a certification of current
+harness versions or full telemetry coverage. Missing usage/cost observations are
+unknown, not zero. No live task or private roadmap content belongs on the site.

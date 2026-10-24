@@ -69,13 +69,32 @@ export default async function Home() {
           <Steps />
         </div>
 
+        <section className="step step--wide" id="plugins" aria-labelledby="plugins-heading">
+          <div className="step-copy">
+            <h2 id="plugins-heading">Small core. Optional integrations.</h2>
+            <p>
+              The v0.11 release candidate keeps harness coordination, task state,
+              Git worktrees, MCP, and evaluation in ahu. Run agents in your current
+              terminal or headless. Add the external cmux plugin for terminal
+              workspaces, or GitHub skills and plugins for issue workflows.
+              Neither service is required.
+            </p>
+            <p>
+              Bring your own tools: start with a skill that uses their CLI, and
+              add an executable plugin when you need a structured integration.
+              Worktrees separate changes; they are not security sandboxes.
+              Enabled plugins run as local code with your user’s access.
+            </p>
+          </div>
+        </section>
+
         <Network />
 
         <section className="close" id="install" aria-labelledby="close-heading">
           <h2 id="close-heading">It’s early. Try it.</h2>
           <CopyInstall command={install} />
           <p className="close-needs">
-            Needs Rust, Git, and the agent CLIs you already use. Interactive sessions run in cmux.
+            Needs Rust, Git, and an installed, authenticated harness. The command installs the latest published release; the plugin architecture above describes the upcoming v0.11 release.
           </p>
           <a href={REPO_URL} className="close-link">
             <GitHubMark />
