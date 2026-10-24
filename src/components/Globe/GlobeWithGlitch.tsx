@@ -57,6 +57,15 @@ function Scene({
   const mouseDelta = useRef(new THREE.Vector2(0, 0));
   const isMouseDown = useRef(false);
   const [controlsEl, setControlsEl] = useState<HTMLElement | null>(null);
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReducedMotion(mq.matches);
+    const listener = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
+    mq.addEventListener("change", listener);
+    return () => mq.removeEventListener("change", listener);
+  }, []);
 
   useEffect(() => {
     if (controlsSelector) setControlsEl(document.querySelector<HTMLElement>(controlsSelector));
@@ -119,8 +128,14 @@ function Scene({
           rotateSpeed={0.6}
         />
       )}
-      <Particles {...PARTICLE_CONFIG} size={gridSize} scale={headScale} />
-      {GLITCH_CONFIG.enabled && (
+      <Particles 
+        {...PARTICLE_CONFIG} 
+        speed={reducedMotion ? 0 : PARTICLE_CONFIG.speed} 
+        curl={reducedMotion ? 0 : PARTICLE_CONFIG.curl} 
+        size={gridSize} 
+        scale={headScale} 
+      />
+      {!reducedMotion && GLITCH_CONFIG.enabled && (
         <EffectComposer>
           <GlitchEffect
             mousePos={mousePos.current}
