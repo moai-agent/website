@@ -44,6 +44,6 @@ Every effect earns its place against legibility:
 
 ## Verification Checklist
 
-1. `bun run --cwd /Users/orie/github.com/moai-agent/website lint` (`tsc --noEmit`) passes with zero type errors.
-2. `bun run --cwd /Users/orie/github.com/moai-agent/website build` passes static export generation to `./out`.
+1. `bun run lint` (`tsc --noEmit`) passes with zero type errors.
+2. `bun run build` passes static export generation to `./out`.
 3. If social share cards or assets changed, verify `bun run og` generates valid PNG.

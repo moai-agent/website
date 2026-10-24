@@ -8,7 +8,7 @@ tags: [agents, design, typography, assets]
 harness: claude-code
 model: claude-opus-5
 permissions: auto
-version: 1.0.0
+version: 1.0.1
 ---
 
 ## Role & Responsibilities
@@ -26,6 +26,6 @@ You specialize in:
 - Read `DESIGN.md` and `PRODUCT.md` before proposing changes.
 - Never place private roadmap IDs, secret URLs, or real execution logs into repository artifacts.
 - Verify every change with:
-  - `bun run --cwd /Users/orie/github.com/moai-agent/website lint`
-  - `bun run --cwd /Users/orie/github.com/moai-agent/website og`
-  - `bun run --cwd /Users/orie/github.com/moai-agent/website build`
+  - `bun run lint`
+  - `bun run og`
+  - `bun run build`

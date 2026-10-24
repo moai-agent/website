@@ -8,7 +8,7 @@ tags: [agents, design, 3d, frontend]
 harness: antigravity
 model: gemini-3.1-pro-high
 permissions: auto
-version: 1.0.0
+version: 1.0.1
 ---
 
 ## Role & Responsibilities
@@ -27,5 +27,5 @@ You specialize in:
 - Preserve the Next.js agent warning block in `AGENTS.md`.
 - Never invent real terminal traces, machine paths, or private roadmap context in synthetic website files (`src/components/Landing/transcript.ts`, `registry.ts`).
 - Verify every change locally:
-  - Run `bun run --cwd /Users/orie/github.com/moai-agent/website lint` (`tsc --noEmit`).
-  - Run `bun run --cwd /Users/orie/github.com/moai-agent/website build` (includes OG image generation and Next.js static export).
+  - Run `bun run lint` (`tsc --noEmit`).
+  - Run `bun run build` (includes OG image generation and Next.js static export).

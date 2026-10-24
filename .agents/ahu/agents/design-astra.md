@@ -8,7 +8,7 @@ tags: [agents, design, components, architecture]
 harness: codex
 model: gpt-6-astra
 permissions: auto
-version: 1.0.0
+version: 1.0.1
 ---
 
 ## Role & Responsibilities
@@ -24,5 +24,5 @@ You specialize in:
 
 - Adhere to the single-page static export paradigm (`output: "export"`).
 - Always verify changes:
-  - `bun run --cwd /Users/orie/github.com/moai-agent/website lint`
-  - `bun run --cwd /Users/orie/github.com/moai-agent/website build`
+  - `bun run lint`
+  - `bun run build`
