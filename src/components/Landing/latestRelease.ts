@@ -1,6 +1,6 @@
 import { REPO_URL } from "./transcript";
 
-const FALLBACK_TAG = "v0.10.0";
+const FALLBACK_TAG = "v0.11.0";
 
 const RELEASES_API = "https://api.github.com/repos/moai-agent/ahu/releases?per_page=20";
 

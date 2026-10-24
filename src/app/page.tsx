@@ -73,10 +73,11 @@ export default async function Home() {
           <div className="step-copy">
             <h2 id="plugins-heading">Small core. Optional integrations.</h2>
             <p>
-              The v0.11 release candidate keeps harness coordination, task state,
+              Ahu v0.11 keeps harness coordination, task state,
               Git worktrees, MCP, and evaluation in ahu. Run agents in your current
-              terminal or headless. Add the external cmux plugin for terminal
-              workspaces, or GitHub skills and plugins for issue workflows.
+              terminal or headless. Add the external{" "}
+              <a className="underline underline-offset-4" href="https://github.com/moai-agent/ahu-plugin-cmux">cmux plugin</a> for terminal
+              workspaces, or <a className="underline underline-offset-4" href="https://github.com/moai-agent/ahu-plugin-github">GitHub skills and plugins</a> for issue workflows.
               Neither service is required.
             </p>
             <p>
@@ -94,7 +95,7 @@ export default async function Home() {
           <h2 id="close-heading">It’s early. Try it.</h2>
           <CopyInstall command={install} />
           <p className="close-needs">
-            Needs Rust, Git, and an installed, authenticated harness. The command installs the latest published release; the plugin architecture above describes the upcoming v0.11 release.
+            Needs Rust, Git, and an installed, authenticated harness. The command installs the latest published release. Optional plugin repositories include installation instructions and security inventories.
           </p>
           <a href={REPO_URL} className="close-link">
             <GitHubMark />

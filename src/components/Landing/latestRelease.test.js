@@ -38,5 +38,5 @@ test("CI refuses publication when release lookup fails", async () => {
 test("local fallback uses a published tag rather than the artwork version", async () => {
   delete process.env.CI;
   globalThis.fetch = (async () => new Response("unavailable", { status: 503 }));
-  expect(await latestAhuTag()).toBe("v0.10.0");
+  expect(await latestAhuTag()).toBe("v0.11.0");
 });
