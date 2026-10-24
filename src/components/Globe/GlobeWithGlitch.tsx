@@ -128,12 +128,12 @@ function Scene({
           rotateSpeed={0.6}
         />
       )}
-      <Particles 
-        {...PARTICLE_CONFIG} 
-        speed={reducedMotion ? 0 : PARTICLE_CONFIG.speed} 
-        curl={reducedMotion ? 0 : PARTICLE_CONFIG.curl} 
-        size={gridSize} 
-        scale={headScale} 
+      <Particles
+        {...PARTICLE_CONFIG}
+        speed={reducedMotion ? 0 : PARTICLE_CONFIG.speed}
+        curl={reducedMotion ? 0 : PARTICLE_CONFIG.curl}
+        size={gridSize}
+        scale={headScale}
       />
       {!reducedMotion && GLITCH_CONFIG.enabled && (
         <EffectComposer>
